@@ -83,7 +83,7 @@ Status Pop(SqStack &S, SElemType &e){
 	}	
 }
 
-
+//×¢ÊÍ
 
 
 
