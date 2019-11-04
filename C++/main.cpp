@@ -30,7 +30,7 @@ int main()
     // scopeVirtualFunTest();
     // multiThreadsTest();
     // threadSafeTest();
-    funTemplateTest();
+    // funTemplateTest();
     // classTemplateTest();
     // templateFriendTest();
     // templateStaticTest();
