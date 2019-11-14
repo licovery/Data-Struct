@@ -1,8 +1,9 @@
-#include "class_test.h"
+#include "class.h"
 #include <iostream>
 
 using namespace std;
 
+//A
 A::A(int a, int b): x(a), y(b)
 {
 
@@ -19,6 +20,9 @@ void A::print()
     cout << "x: " << x << endl;
     cout << "y: " << y << endl;
 }
+
+
+//ValueClass
 
 ostream & operator<<(ostream &out, const ValueClass &s)
 {

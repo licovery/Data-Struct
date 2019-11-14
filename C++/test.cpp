@@ -1,16 +1,36 @@
-#include "test.h"
 #include <vector>
-#include "operator_overloading.h"
-#include "class_test.h"
-#include "strvec.h"
 #include <map>
 #include <algorithm>
 #include <functional>
+#include <typeinfo>
+#include <type_traits>
+#include <memory>
+#include <unordered_map>
+
+#include "multi_threads.h"
+#include "test.h"
+#include "function.h"
 #include "oop.h"
 #include "template.h"
-#include <typeinfo>
+#include "operator_overloading.h"
+#include "class.h"
+#include "strvec.h"
+
 
 using namespace std;
+
+void functionOverloadTest()
+{
+    // int i = 10;
+    // myf(i);二义性调用，一般有了传值和传引用一般只定义一个。不然容易发生二义性调用
+}
+
+void allocatorTest()
+{
+    allocator<A> alloc;
+    auto p = alloc.allocate(1);
+    alloc.construct(p);
+}
 
 void synthesizeCopyConstructTest()
 {
@@ -132,7 +152,6 @@ void strVecMoveTest()
 {
     vector<StrVec> v;
     v.push_back(StrVec ());
-
     StrVec a = std::move(retStrVec());
     a = retStrVec();
     cout << a << endl;
@@ -264,17 +283,20 @@ void scopeVirtualFunTest()
     //总结，静态类型决定了哪些成员是可见的。
 }
 
-extern template int compare(const int &, const int &);
+extern template int mycompare(const int &, const int &);
 extern template class Blob<int>;
 extern template class Blob<double>;
 extern template class Blob<string>;
 
 void funTemplateTest()
 {
-    cout << compare(1, 2) << endl;
+    cout << mycompare(1, 2) << endl;
     char a[5] = "123";
     char b[10] = "123887";
-    cout << compare(a, b) << endl;
+    cout << mycompare(a, b) << endl;
+    auto p1 = "hhh";
+    auto p2 = "www";
+    cout << mycompare(p1, p2) << endl;
 }
 
 void classTemplateTest()
@@ -339,7 +361,83 @@ void memberTemplateTest()
     Blob<string> c(w.begin(), w.end());
 }
 
-void simpleTest()
+void argumentTemplateTest()
 {
+    mycompare<int>(1, 2);
+    int i;
+    const int ci = 5;
+
+    //模板参数形式为T
+    f1(i);
+    f1(ci);//顶层const忽略
+    f1(5);
+    //以上三种T均为int
+
+    //模板参数形式为T &
+    f2(i);//T为int &
+    f2(ci);//T为const int &
+    // f2(5);不能把右值绑定到左值引用上
+
+    //模板参数形式为T &&
+    //如果模板参数是右值引用形式（T &&），那么左值i会的类型T会被推导到int &,int & &&被折叠成int &
+    f3(i);//T为int &  T &&->int & &&->int &
+    f3(ci);//T为const int &  T &&->const int & &&->const int &
+    f3(5);//T为int T &&->int &&
+}
+
+void typeTransformationTest()
+{
+    int a = 10;
+    int &r = a;
+    remove_reference<decltype(r)>::type i = 20;//如果r是一个模板类型的变量，那么需要在前面加typename
+}
+
+void templateOverloadTest()
+{
+    const char *p = "hello world";
+    string s = "hello";
+    const string *sp = &s;
+    char c;
+    int i;
+    cout << debug_rep(c) << endl;
+    cout << debug_rep(i) << endl;
+    //并不会调用特例化版本，因为重载的候选函数是基模板函数和非模板函数，只有已经选定基模板函数的情况下，才考虑特例化函数。
+    cout << debug_rep(p) << endl;
+    cout << debug_rep(s) << endl;
+    cout << debug_rep(sp) << endl;
+    cout << debug_rep("hello") << endl;
     
 }
+
+void variadicTemplateTest()
+{
+    int i = 0;
+    double d = 1.1;
+    string s = "hello";
+    foo(i);
+    foo(i, d, s);
+    foo(1, 2, 3, 4);
+    print(cout, 1, 2.0, "hello", 'c');
+
+    //使用 Args && ... args  和 std::forward<Args>(args)... 可以实现参数包的转发
+    //make_shared就是这样做的,还有allocator的construct函数
+}
+
+void templateSpecializationTest()
+{
+    unordered_map<A, int> m;
+    A a1(10, 20), a2(20, 30);
+    m[a1] = 20;
+    m[a2] = 50;
+}
+
+
+
+void simpleTest()
+{
+    string s = "hello";
+    // ValueClass(string s = "")存在这个构造函数
+    ValueClass a = s;//这里是直接调用构造函数
+    const char * const p = nullptr;//这里才是真正的常量的指针。
+}
+    

@@ -139,7 +139,9 @@ StrVec & StrVec::operator=(StrVec &&rhs) noexcept
 
 StrVec retStrVec()
 {
-    return StrVec ();
+    StrVec a;
+    a.push_back("111");
+    return a;
 }
 
 StrVec & StrVec::operator=(std::initializer_list<std::string> il)

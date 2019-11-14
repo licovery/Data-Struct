@@ -1,9 +1,8 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "multi_threads.h"
-#include "thread_safe_single_instance.h"
-
+void functionOverloadTest();
+void allocatorTest();
 void valueClassTest();
 void pointerClassTest();
 void synthesizeCopyConstructTest();
@@ -29,6 +28,13 @@ void templateFriendTest();
 void templateStaticTest();
 void templateParaTest();
 void memberTemplateTest();
+void argumentTemplateTest();
+void typeTransformationTest();
+void templateOverloadTest();
+void variadicTemplateTest();
+void templateSpecializationTest();
+
+
 void simpleTest();
 
 #endif

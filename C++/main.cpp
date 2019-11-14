@@ -1,7 +1,6 @@
 #include <iostream>
 #include "test.h"
-#include "io.h"
-#include "template.h"
+#include "class.h"
 
 using namespace std;
 
@@ -36,7 +35,11 @@ int main()
     // templateStaticTest();
     // templateParaTest();
     // memberTemplateTest();
-    simpleTest();
-    cout << "hello world" << endl;
+    // typeTransformationTest();
+    // templateOverloadTest();
+    // variadicTemplateTest();
+    templateSpecializationTest();
+    // simpleTest();
+    // cout << "hello world" << endl;
     return 0;
 }

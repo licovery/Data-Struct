@@ -7,11 +7,12 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <sstream>
 using namespace std;
 
 //函数模板
 template <typename T>
-inline int compare(const T &v1, const T &v2)//可声明内联
+int mycompare(const T &v1, const T &v2)//可声明内联
 {
     if (less<T>()(v1, v2))
     {
@@ -29,10 +30,16 @@ inline int compare(const T &v1, const T &v2)//可声明内联
 
 //非类型模板参数，一般用来处理数组，非类型模板参数的实参必须是常量表达式
 template <unsigned N, unsigned M>
-int compare(const char (&s1)[N], const char (&s2)[M])
+int mycompare(const char (&s1)[N], const char (&s2)[M])
 {
     return strcmp(s1, s2);
 }
+
+
+typedef const char * ConstCharPointer;
+// 特例化
+template <>
+int mycompare(const ConstCharPointer &p1, const ConstCharPointer &p2);
 
 
 template <typename T>
@@ -44,7 +51,7 @@ public:
     //vector<T>::size_type是一个依赖名，因为不知道T具体是什么，size_type也不知道是类型或者是静态数据或静态函数，需要加typename以说明
     Blob();
     Blob(initializer_list<T> il);
-    template <typename It> Blob(It b, It e);//模板成员
+    template <typename It> Blob(It b, It e);//成员模板
     void push_back(const T &t);
     void pop_back();
     size_type size() const;
@@ -230,5 +237,106 @@ public:
 private:
     T val;
 };
+
+//当无法确定返回值类型，需要使用decltype时，可以使用尾置返回类型。decltype可以推测出引用
+template <typename It>
+auto getValue(It it) -> decltype(*it)
+{
+    return *it;
+}
+
+
+
+template <typename T>
+void f1(T)
+{
+    
+}
+
+template <typename T>
+void f2(T &)
+{
+    
+}
+
+//引用折叠和右值引用参数
+template <typename T>
+void f3(T &&)
+{
+    
+}
+
+
+//参数转发 模板参数类型为右值引用，加上forword
+template <typename F, typename T1, typename T2>
+void flip(F f, T1 &&t1, T2 &&t2)
+{
+    f(std::forward<T2>(t2), std::forward<T1>(t1));
+}
+
+//模板与重载
+
+//可匹配任意调用
+template <typename T>
+string debug_rep(const T &t)
+{
+    return "const T &t";
+}
+
+//只匹配指针类型参数，更特化
+template <typename T>
+string debug_rep(T *p)
+{
+    return "T *p";
+}
+
+//特例化 string debug_rep(const T &t)
+template <>
+string debug_rep(const int &i);
+
+//特例化 string debug_rep(const T &t)
+typedef const char * ConstCharPointer;
+template <>
+string debug_rep(const ConstCharPointer &p);
+
+//普通非模板函数，最特化
+string debug_rep(const string &s);
+
+
+//变参模板
+template <typename T, typename ... Args>
+void foo(const T &t, const Args & ... args)
+{
+    cout << sizeof...(Args) << " ";
+    cout << sizeof...(args) << endl;
+}
+
+//终止函数
+template <typename T>
+ostream & print(ostream &out, const T &t)
+{
+    return out << t << endl;
+}
+
+//递归处理变参
+template <typename T, typename ... Args>
+ostream & print(ostream &out, const T &t, const Args & ... args)
+{
+    out << t << ", ";
+    print(out, args...);
+}
+
+//转发参数包
+//使用右值引用和farword一起可以实现转发，加上...实现变参转发
+/*
+template <typename ... T>
+void fun(Args && ... args)
+{
+    work(std::forward<Args>(args)...);
+}
+*/
+
+
+
 
 #endif

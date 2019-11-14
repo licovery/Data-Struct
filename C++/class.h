@@ -8,6 +8,8 @@ using namespace std;
 
 class A
 {
+    friend class hash<A>;
+    friend class equal_to<A>;
 public:
     A() = default;
     A(int a, int b);
@@ -17,6 +19,32 @@ private:
     int x = 1;
     int y = 2;
 };
+
+//类模板特例化
+namespace std
+{
+
+template <>
+struct hash<A>
+{
+    size_t operator()(const A &a) const
+    {
+        return hash<int>()(a.x) ^ hash<int>()(a.y);
+    }
+};
+
+template <>
+struct equal_to<A>
+{
+    bool operator()(const A &a1, const A &a2) const
+    {
+        return a1.x == a2.x && a1.y == a2.y;
+    }
+};
+
+}
+
+
 
 //行为像值的类的
 class ValueClass
