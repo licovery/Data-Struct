@@ -1,6 +1,8 @@
 #include "operator_overloading.h"
 
-
+namespace lf_ope
+{
+    
 bool operator<(const Book &b1, const Book &b2)
 {
     return b1.price < b2.price;
@@ -24,4 +26,6 @@ void fun(SmallInt i)
 void fun(SmallInt2 i)
 {
     std::cout << "para SmallInt2" << std::endl;
+}
+
 }

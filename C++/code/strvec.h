@@ -8,6 +8,9 @@
 #include <iostream>
 #include <initializer_list>
 
+namespace lf_vec
+{
+
 class StrVec
 {
 public:
@@ -45,5 +48,7 @@ private:
 
 std::ostream & operator<<(std::ostream &out, const StrVec &v);
 StrVec retStrVec();
+
+}
 
 #endif

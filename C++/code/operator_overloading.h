@@ -4,6 +4,12 @@
 #include <functional>
 #include <iostream>
 
+
+namespace lf_ope
+{
+
+//member access operator overload
+
 struct Value { int foo, bar; };
 
 struct B {
@@ -25,10 +31,11 @@ struct D {
     Value & operator*() const {return *this->operator->();}
 };
 
+
 class Book
 {
 public:
-    Book(const std::string &n, double p):name(n), price(p){}
+    Book(const std::string &n, double p):name(n), price(p) {}
     friend bool operator<(const Book &b1, const Book &b2);
 private:
     std::string name;
@@ -38,7 +45,10 @@ private:
 bool operator<(const Book &b1, const Book &b2);
 
 
+//()运算符重载
+
 int add(int, int);
+
 struct divide
 {
     int operator()(int denominator, int divisor)
@@ -46,6 +56,8 @@ struct divide
         return denominator / divisor;
     }
 };
+
+//类型运算符重载
 
 class SmallInt
 {
@@ -91,5 +103,6 @@ public:
 void fun(SmallInt i);
 void fun(SmallInt2 i);
 
+}
 
 #endif

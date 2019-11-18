@@ -1,4 +1,10 @@
 #!/bin/bash
 
 #windows
-g++ -g -std=c++11 *.cpp && ./a.exe
+cd project
+rm -rf build/
+mkdir build
+cd build
+cmake -G "Unix Makefiles" ..
+make
+./a.exe

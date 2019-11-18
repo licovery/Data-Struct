@@ -1,6 +1,8 @@
 #include "oop.h"
 #include <iostream>
-using namespace std;
+
+namespace lf_oop
+{
 
 size_t Qoute::totalBookNum = 0;
 
@@ -65,3 +67,4 @@ void Bulk_qoute::debug() const
     cout << "bookNo" << endl << "price" << endl << "minNum" << endl << "discount" << endl;
 }
 
+}

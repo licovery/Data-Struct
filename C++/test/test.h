@@ -1,27 +1,45 @@
 #ifndef TEST_H
 #define TEST_H
 
+//fucntion
 void functionOverloadTest();
-void allocatorTest();
+void functionNameSearch();
+void bindFunctionObjectTest();
+
+//class
 void valueClassTest();
 void pointerClassTest();
 void synthesizeCopyConstructTest();
-void deleteTest();
 void sizeofTest();
+
+//oop
 void virtualFunTest();
+void vptrVtblTest();
 void inheritanceCompositionCtorDtorTest();
-void vectorPushBackTest();
-void strVecTest();
-void strVecMoveTest();
-void memberAccessOperatorOverloadTest();
-void stlFunctionObjectTest();
-void customizeClassInMap();
-void bindFunctionObjectTest();
-void callableObjTest();
-void typeConversionOperatorOverloadTest();
 void oopStaticTest();
 void oopVirtualFunTest();
 void scopeVirtualFunTest();
+
+//memory_management
+void allocatorTest();
+void deleteTest();
+
+//strvec
+void strVecTest();
+void strVecMoveTest();
+
+//stl
+void customizeClassInMap();
+void vectorPushBackTest();
+
+
+//operator_overloading
+void memberAccessOperatorOverloadTest();
+void stlFunctionObjectTest();
+void callableObjTest();
+void typeConversionOperatorOverloadTest();
+
+//template
 void funTemplateTest();
 void classTemplateTest();
 void templateFriendTest();
@@ -34,7 +52,8 @@ void templateOverloadTest();
 void variadicTemplateTest();
 void templateSpecializationTest();
 
-
+//others
 void simpleTest();
+void test();
 
 #endif

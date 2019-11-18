@@ -4,8 +4,10 @@
 #include<string>
 #include <iostream>
 
+namespace lf_oop
+{
+    
 using namespace std;
-
 
 struct Base
 {
@@ -93,6 +95,66 @@ public:
     void debug() const override final; //final不让虚函数继续被子类覆写
 };
 
+
+class Document
+{
+public:
+    Document(const string &t = "", const string &c = ""): 
+    title(new string(t)), content(new string(c))
+    {
+    }
+    Document(const Document &rhs): 
+    title(new string(*(rhs.title))), content(new string(*(rhs.content)))
+    {
+    }
+    Document & operator=(const Document &rhs)
+    {
+        auto tempT = new string(*(rhs.title));
+        auto tempC = new string(*(rhs.content));
+        delete title;
+        delete content;
+        title = tempT;
+        content = tempC;
+        return *this;
+    }
+    virtual ~Document()
+    {
+        delete title;
+        delete content;
+    }
+    virtual void print() const //要被子类ovrewrite
+    {
+    }
+    string * getTitle() const
+    {
+        return title;
+    }
+    string * getContent() const
+    {
+        return content;
+    }
+    void openFile()
+    {
+        print();
+    }
+private:
+    string *title;
+    string *content;
+};
+
+class MyDoc: public Document
+{
+public:
+    MyDoc(const string &t = "", const string &c = ""):Document(t, c)
+    {
+    }
+    void print() const override
+    {
+        cout << *getTitle() << endl;
+        cout << *getContent() << endl;
+    }
+};
+
 class B1
 {
 public:
@@ -142,7 +204,7 @@ public:
     Base1(Base1 &&) = default;
     Base1 & operator=(const Base1 &) = default;
     Base1 & operator=(Base1 &&) = default;
-    virtual ~Base1() = default;
+    virtual ~Base1() = default;//虚函数会增加对象的大小，会让对象多出一个指针
 };
 
 class Derived1: public Base1
@@ -176,5 +238,6 @@ public:
     }
 };
 
+} // namespace lf_oop
 
 #endif

@@ -1,5 +1,8 @@
 #include "strvec.h"
 
+namespace lf_vec
+{
+
 std::allocator<std::string> StrVec::alloc;
 
 StrVec::StrVec()
@@ -191,4 +194,6 @@ StrVec & StrVec::operator*() const
 StrVec * StrVec::operator->() const
 {
     return & this->operator*();
+}
+
 }

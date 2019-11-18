@@ -1,4 +1,5 @@
 *.exe
 vscode-workspace/
 socket/.idea/
-.vscode
+.vscode/
+build/

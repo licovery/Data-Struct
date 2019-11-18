@@ -1,5 +1,9 @@
 #include "template.h"
 
+namespace lf_tem
+{
+
+
 //显式实例化函数模板
 template int mycompare(const int &, const int &);
 
@@ -34,4 +38,6 @@ template <>
 int mycompare(const ConstCharPointer &p1, const ConstCharPointer &p2)
 {
     return strcmp(p1, p2);
+}
+
 }

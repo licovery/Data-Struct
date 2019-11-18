@@ -8,6 +8,10 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
+
+namespace lf_tem
+{
+
 using namespace std;
 
 //函数模板
@@ -110,6 +114,9 @@ class Data;//前置声明
 template<typename T>//模板函数前置声明
 bool operator==(const Data<T> &v1, const Data<T> &v2);
 
+template <typename T>
+class Access;
+
 
 template<typename T>
 class Data
@@ -134,12 +141,18 @@ private:
     T a;
 };
 
-template<typename T>//模板实现
-bool operator==(const Data<T> &v1, const Data<T> &v2)
+
+class Pal
 {
-    cout << v1.a << " " << v2.a << endl;
-    cout << "==" << endl;
-}
+public:
+    void fun()
+    {
+        Data<int> p; //任意类型实例的Data都可以访问，因为Pal是Data的友元
+        cout << p.a << endl;
+    }
+private:
+};
+
 
 template <typename T> 
 class Print//可以访问同类型实例化的Data的所有数据
@@ -151,6 +164,13 @@ public:
         cout << d.a << endl;
     }
 };
+
+template<typename T>//模板实现
+bool operator==(const Data<T> &v1, const Data<T> &v2)
+{
+    cout << v1.a << " " << v2.a << endl;
+    cout << "==" << endl;
+}
 
 template <typename T>
 class Access
@@ -336,7 +356,7 @@ void fun(Args && ... args)
 }
 */
 
-
+}
 
 
 #endif
