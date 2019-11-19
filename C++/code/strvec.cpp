@@ -81,7 +81,7 @@ void StrVec::reallocate()
     size_t oldSize = size();
     size_t newCap = size() ? size() * 2 : 1;
     std::string *newData = alloc.allocate(newCap);
-    for (auto i = 0; i < size(); ++i)
+    for (size_t i = 0; i < size(); ++i)
     {
         alloc.construct(newData + i, std::move(element[i]));
     }
@@ -137,6 +137,7 @@ StrVec & StrVec::operator=(StrVec &&rhs) noexcept
     cap = rhs.cap;
     //rhs置于可析构状态
     rhs.element = rhs.lastNext = rhs.cap = nullptr;
+    return *this;
 }
 
 

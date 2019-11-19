@@ -34,6 +34,6 @@ void memberAccessOperatorOverloadTest()
     D d;
     d->foo = 999;
     cout << (*d).foo << endl;
-    (*d).foo == 10000;
+    (*d).foo = 10000;
     cout  << d->foo << endl;
 }

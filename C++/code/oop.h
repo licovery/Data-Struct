@@ -213,24 +213,31 @@ public:
     Derived1(): Base1()
     {
         //列表初始化先调基类的构造函数
+        // ...
     }
     Derived1(const Derived1 &rhs): Base1(rhs)
     {
         //列表初始化先调基类的拷贝构造函数
+        // ...
     }
     Derived1(Derived1 &&lhs): Base1(std::move(lhs))
     {
         //列表初始化先调基类的移动构造函数
+        // ...
     }
     Derived1 & operator=(const Derived1 &rhs)
     {
         //先为基类部分赋值
         Base1::operator=(rhs);
+        // ...
+        return *this;
     }
-    Derived1 & operator=(Derived1 &&lhs)
+    Derived1 & operator=(Derived1 &&lhs)//注意这里lch是左值，因为lch是一个变量
     {
         //先为基类部分赋值
-        Base1::operator=(lhs);
+        Base1::operator=(std::move(lhs));
+        // ...
+        return *this;
     }
     ~Derived1()
     {

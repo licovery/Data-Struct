@@ -5,6 +5,6 @@ cd project
 rm -rf build/
 mkdir build
 cd build
-cmake -G "Unix Makefiles" ..
+cmake -G "MinGW Makefiles" -DCMAKE_SH="CMAKE_SH-NOTFOUND" ..  
 make
 ./a.exe

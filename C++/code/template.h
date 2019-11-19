@@ -105,18 +105,21 @@ typename Blob<T>::size_type Blob<T>::size() const
 
 //模板与友元
 
-template<typename T> 
-class Print;//前置声明
+//前置声明
+//类最好都加上前置声明，有些编译器对没有前置声明支持不好
+class Pal;
 
 template<typename T> 
-class Data;//前置声明
+class Print;
 
-template<typename T>//模板函数前置声明
-bool operator==(const Data<T> &v1, const Data<T> &v2);
+template<typename T> 
+class Data;
 
 template <typename T>
 class Access;
 
+template<typename T>//模板函数前置声明
+bool operator==(const Data<T> &v1, const Data<T> &v2);
 
 template<typename T>
 class Data
@@ -170,6 +173,7 @@ bool operator==(const Data<T> &v1, const Data<T> &v2)
 {
     cout << v1.a << " " << v2.a << endl;
     cout << "==" << endl;
+    return v1.a == v2.a;
 }
 
 template <typename T>
@@ -333,14 +337,14 @@ void foo(const T &t, const Args & ... args)
 
 //终止函数
 template <typename T>
-ostream & print(ostream &out, const T &t)
+void print(ostream &out, const T &t)
 {
-    return out << t << endl;
+    out << t << endl;
 }
 
 //递归处理变参
 template <typename T, typename ... Args>
-ostream & print(ostream &out, const T &t, const Args & ... args)
+void print(ostream &out, const T &t, const Args & ... args)
 {
     out << t << ", ";
     print(out, args...);

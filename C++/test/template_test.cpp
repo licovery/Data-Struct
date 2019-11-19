@@ -7,9 +7,9 @@ using namespace lf_tem;
 using lf_cla::A;
 
 extern template int lf_tem::mycompare(const int &, const int &);
-extern template class Blob<int>;
-extern template class Blob<double>;
-extern template class Blob<string>;
+extern template class lf_tem::Blob<int>;
+extern template class lf_tem::Blob<double>;
+extern template class lf_tem::Blob<string>;
 
 void funTemplateTest()
 {
@@ -43,7 +43,6 @@ void templateFriendTest()
 
     Print<string> p;
     p.fun();
-
     Access<double> a;
     a.fun();
 
@@ -57,10 +56,6 @@ void templateStaticTest()
     cout << ft.value() << endl;
 }
 
-bool com(int a, int b)
-{
-    return true;
-}
 
 void templateParaTest()
 {

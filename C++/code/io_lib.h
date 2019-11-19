@@ -1,5 +1,5 @@
-#ifndef IO_H
-#define IO_H
+#ifndef IO_LIB_H
+#define IO_LIB_H
 
 
 void chineseStringTest();

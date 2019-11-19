@@ -6,7 +6,7 @@ namespace lf_oop
 
 size_t Qoute::totalBookNum = 0;
 
-Qoute::Qoute(const string &book, double p): bookNo(book), price(p)
+Qoute::Qoute(const string &book, double p): price(p), bookNo(book)
 {
 
 }
@@ -60,6 +60,7 @@ double Bulk_qoute::net_price(size_t n) const
     {
         totalPrice = n * price * discount;
     }
+    return totalPrice;
 }
 
 void Bulk_qoute::debug() const
