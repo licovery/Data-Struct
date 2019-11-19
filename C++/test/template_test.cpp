@@ -6,6 +6,7 @@ using namespace std;
 using namespace lf_tem;
 using lf_cla::A;
 
+//这里都要加上命名空间，因为这里属于声明，如果不加命名空间，会认为在全局extern
 extern template int lf_tem::mycompare(const int &, const int &);
 extern template class lf_tem::Blob<int>;
 extern template class lf_tem::Blob<double>;

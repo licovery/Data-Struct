@@ -22,7 +22,9 @@ void scopeVirtualFunTest();
 
 //memory_management
 void allocatorTest();
-void deleteTest();
+void newDeleteTest();
+void classNewDeleteTest();
+void placementNewTest();
 
 //strvec
 void strVecTest();

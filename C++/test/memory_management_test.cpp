@@ -1,7 +1,9 @@
 #include <memory>
 #include "class.h"
+#include "memory_management.h"
 
 using namespace std;
+using namespace lf_mem;
 
 void allocatorTest()
 {
@@ -10,14 +12,27 @@ void allocatorTest()
     alloc.construct(p);
 }
 
-void deleteTest()
+void newDeleteTest()
 {
     auto p = new char;
-    auto q = new char[1];
+    auto q = new char[5];
     delete p;
     delete[] q;
-    auto p1 = new char[1];
-    auto q2 = new char[10];
-    delete p1;//不报错，但是会产生未定义的行为
-    delete q2;//不报错，但是会产生未定义的行为
+}
+
+void classNewDeleteTest()
+{
+    //根据从Foo及其父类的命名空间开始找operator new
+    auto p = new Foo;
+    delete p;
+
+    p = new Foo[5];//会额外分配空间指示数组长度
+    delete[] p;
+
+    p = ::new Foo;//强制使用全局的
+}
+
+void placementNewTest()
+{
+    auto p = new(1, 2) Foo(5);//这里构造会抛出异常
 }

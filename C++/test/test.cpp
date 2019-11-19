@@ -27,7 +27,7 @@ void simpleTest()
 void test()
 {
     // synthesizeCopyConstructTest();
-    // deleteTest();
+    
     // valueClassTest();
     // pointerClassTest();
     // sizeofTest();
@@ -47,7 +47,7 @@ void test()
     // oopStaticTest();
     // oopVirtualFunTest();
     // scopeVirtualFunTest();
-    threadSafeTest();
+    // threadSafeTest();
     // funTemplateTest();
     // classTemplateTest();
     // templateFriendTest();
@@ -59,5 +59,8 @@ void test()
     // variadicTemplateTest();
     // templateSpecializationTest();
     // vptrVtblTest();
-    simpleTest();
+    // simpleTest();
+    // newDeleteTest();
+    // classNewDeleteTest();
+    // placementNewTest();
 }
