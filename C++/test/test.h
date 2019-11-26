@@ -54,6 +54,9 @@ void templateOverloadTest();
 void variadicTemplateTest();
 void templateSpecializationTest();
 
+//expection
+void tryCatchTest();
+
 //others
 void simpleTest();
 void test();

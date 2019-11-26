@@ -7,7 +7,9 @@
 namespace lf_oop
 {
     
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 
 struct Base
 {

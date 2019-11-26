@@ -59,8 +59,10 @@ void test()
     // variadicTemplateTest();
     // templateSpecializationTest();
     // vptrVtblTest();
-    // simpleTest();
+    simpleTest();
     // newDeleteTest();
     // classNewDeleteTest();
     // placementNewTest();
+
+    tryCatchTest();
 }
