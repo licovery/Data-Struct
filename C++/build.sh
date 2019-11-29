@@ -1,6 +1,9 @@
 cd $(dirname $0)
 cd project
-rm -rf build/
+if [ -d "build" ]
+then
+    rm -rf build/
+fi
 mkdir build
 cd build
 platform=$(uname)
