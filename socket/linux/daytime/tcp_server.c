@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         inet_ntop(AF_INET, &clientAddr.sin_addr, clinetIp, 20);
         printf("connect from clinet %s:%d\n", clinetIp, ntohs(clientAddr.sin_port));
         
-        //设置发送不缓存，暂时没有生效
+        //设置发送不缓存，tcpdump抓包显示确实是一个个发的，但是接收方read可能有缓存
         int flag = 1;
         status = setsockopt(acceptFd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
         checkStatus(status);
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
         //先发送rsp长度，通知客户端下一次发送数据的大小
         *(int *)buf = htonl(msgSize);
-        status = send(acceptFd, buf, sizeof(int), 0);
+        status = write(acceptFd, buf, sizeof(int));
         checkStatus(status);
         
         memset(buf,0,MAX_BUF_SIZE);
@@ -69,15 +69,22 @@ int main(int argc, char *argv[])
         //一个个字符地发送，可能实际会缓存起来再一次性发送
         for(int i = 0; i < msgSize; i++)
         {
-            status = send(acceptFd, pBuf + i, 1, 0);
+            status = write(acceptFd, pBuf + i, 1);//send成功只是把数据写到内核缓冲区，不一定已经发送到对端
             checkStatus(status);
             if (status == 0)
             {
                 perror("send nothing\n");
             }
         }
-
-        // close(acceptFd); send成功只是把数据写到内核缓冲区，不一定已经发送到对端
+        // 检测对端是否关闭连接,对端关闭的时候，read会返回0
+        status = recv(acceptFd, buf, MAX_BUF_SIZE, 0);
+        if (status == 0)
+        {
+            //如果没有调用close，那么只是关闭了从client到server的数据流动，server到client的并没有关闭，tcp连接不会关闭
+            //tcp断开的四次握手只有两次
+            //具体分析可以看抓包
+            close(acceptFd);
+        }
         printf("send complete\n");
     }
 

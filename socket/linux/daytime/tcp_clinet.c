@@ -16,20 +16,22 @@ int main(int argc, char**argv)
     }
 
     int status = 0;
+    //创建连接fd
     int conFd = socket(AF_INET, SOCK_STREAM, 0);
     checkStatus(conFd);
-
+    //填写服务器信息
     struct sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     checkStatus(inet_pton(AF_INET, argv[1], &serverAddr.sin_addr));
     serverAddr.sin_port = htons(atoi(argv[2]));
-
+    //建立tcp连接
     status = connect(conFd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
     checkStatus(status);
 
     int recvByte = 0;
     char buf[MAX_BUF_SIZE];
-    recvByte = recv(conFd, buf, sizeof(int), 0);
+    //先接收服务通知的真正消息的大小，只收4个字节
+    recvByte = read(conFd, buf, sizeof(int));
     checkStatus(recvByte);
     int msgSize = ntohl(*(int *)buf);
     printf("message size:%d\n", msgSize);
@@ -37,13 +39,15 @@ int main(int argc, char**argv)
     memset(buf, 0, MAX_BUF_SIZE);
     char *pBuf = buf;
     int curSize = 0;
+    //循环接收真正的数据
     while (curSize < msgSize)
     {
-        recvByte = recv(conFd, pBuf, MAX_BUF_SIZE - curSize, 0);
+        recvByte = read(conFd, pBuf, MAX_BUF_SIZE - curSize);
         checkStatus(recvByte);
         if (recvByte == 0)
         {
             perror("connection close by peer\n");
+            close(conFd);
             exit(-1);
         }
         curSize += recvByte;
