@@ -1,38 +1,45 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include "comm.h"
-#include <unistd.h>
-#include <string.h>
+#include <comm.h>
 
+void Usage(char *path)
+{
+    printf("./%s <serverIp> <port>\n", path);
+}
 
 int main(int argc, char**argv)
 {
     if (argc != 3)
     {
         Usage(argv[0]);
+        return 0;
     }
 
-    int status = 0;
     //创建连接fd
-    int conFd = socket(AF_INET, SOCK_STREAM, 0);
-    checkStatus(conFd);
+    int conFd = Socket(AF_INET, SOCK_STREAM, 0);
+
     //填写服务器信息
     struct sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
-    checkStatus(inet_pton(AF_INET, argv[1], &serverAddr.sin_addr));
+    Inet_pton(AF_INET, argv[1], &serverAddr.sin_addr);
     serverAddr.sin_port = htons(atoi(argv[2]));
+    
     //建立tcp连接
-    status = connect(conFd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
-    checkStatus(status);
+    Connect(conFd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
+ 
+    //connect后才能getsockname
+    struct sockaddr_in myAddr;
+    socklen_t myAddrLen = sizeof(myAddr);
+    Getsockname(conFd, (struct sockaddr *)&myAddr, &myAddrLen);
+    ShowSockaddr(&myAddr);
 
     int recvByte = 0;
     char buf[MAX_BUF_SIZE];
     //先接收服务通知的真正消息的大小，只收4个字节
-    recvByte = read(conFd, buf, sizeof(int));
-    checkStatus(recvByte);
+    recvByte = Readn(conFd, buf, sizeof(int));
+    if (recvByte == 0)
+    {
+        perror("connection close by peer\n");
+        exit(-1);//进程退出，不用close也可以，会自动close
+    }
     int msgSize = ntohl(*(int *)buf);
     printf("message size:%d\n", msgSize);
     
@@ -42,12 +49,10 @@ int main(int argc, char**argv)
     //循环接收真正的数据
     while (curSize < msgSize)
     {
-        recvByte = read(conFd, pBuf, MAX_BUF_SIZE - curSize);
-        checkStatus(recvByte);
+        recvByte = Read(conFd, pBuf, MAX_BUF_SIZE - curSize);
         if (recvByte == 0)
         {
             perror("connection close by peer\n");
-            close(conFd);
             exit(-1);
         }
         curSize += recvByte;
@@ -56,6 +61,7 @@ int main(int argc, char**argv)
     }
     printf("response from server: %s", buf);
     
-    close(conFd);
+    Close(conFd);
+
     return 0;
 }
