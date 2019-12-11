@@ -27,7 +27,6 @@ void simpleTest()
 void test()
 {
     // synthesizeCopyConstructTest();
-    
     // valueClassTest();
     // pointerClassTest();
     // sizeofTest();
@@ -59,10 +58,9 @@ void test()
     // variadicTemplateTest();
     // templateSpecializationTest();
     // vptrVtblTest();
-    simpleTest();
+    // simpleTest();
     // newDeleteTest();
     // classNewDeleteTest();
     // placementNewTest();
-
-    tryCatchTest();
+    // tryCatchTest();
 }

@@ -353,7 +353,7 @@ void print(ostream &out, const T &t, const Args & ... args)
 //转发参数包
 //使用右值引用和farword一起可以实现转发，加上...实现变参转发
 /*
-template <typename ... T>
+template <typename ... Args>
 void fun(Args && ... args)
 {
     work(std::forward<Args>(args)...);

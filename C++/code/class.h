@@ -11,6 +11,7 @@ namespace lf_cla
 
 class A
 {
+    // 一般友元最后前置声明，由于hash和equal都在functional里面声明，所以已经前置声明
     friend class std::hash<A>;
     friend class std::equal_to<A>;
 public:
@@ -63,8 +64,8 @@ class ValueClass
 public:
     ValueClass(string s = "");
     ValueClass(const ValueClass &rhs);
-    ~ValueClass();
     ValueClass & operator=(const ValueClass &rhs);
+    ~ValueClass();
 private:
     string *ps;
 };
