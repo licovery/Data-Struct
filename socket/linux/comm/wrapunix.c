@@ -154,3 +154,21 @@ Write(int fd, void *ptr, size_t nbytes)
 	if (write(fd, ptr, nbytes) != nbytes)
 		err_sys("write error");
 }
+
+
+Sigfunc * 
+Signal(int signo, Sigfunc *func)
+{
+	struct sigaction act, oldact;
+
+	act.sa_handler = func;
+	sigemptyset(&act.sa_mask);
+	act.sa_flags = 0;
+	act.sa_flags |= SA_RESTART;		//重启因为信号处理被中断的慢系统调用，例如accept,read
+
+	if (sigaction(signo, &act, &oldact) < 0)
+	{
+		err_sys("sigaction error");
+	}
+	return oldact.sa_handler;
+}

@@ -1,7 +1,7 @@
 set -e
 cd $(dirname $0)
 
-complieflag=" -g -std=c11 -Wall "
+complieflag=" -g -Wall "
 
 if [ -d "build" ]
 then
@@ -10,5 +10,5 @@ fi
 mkdir build
 
 cd build
-gcc ${complieflag} -c ../*.c 2>> log.txt
-ar crv libcomm.a *.o >> log.txt
+gcc ${complieflag} -c ../*.c 
+ar crv libcomm.a *.o 

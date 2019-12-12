@@ -12,26 +12,33 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <netinet/tcp.h>
+#include <sys/stropts.h>
 
 // standard C
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <signal.h>
 #include <time.h>
 #include <errno.h>
 
-
+// 限制值
 #define MAX_LISTEN_CON 16
 #define MAX_BUF_SIZE 4096
 #define MAXLINE 1024
+#define MAX_CONNECTION 1024
+
+// 端口
 #define DAYTIME_PORT 30000
+#define ECHO_PORT 30001
+#define SERVER_PORT 9877
 
 void CheckStatus(int status);
 void CheckPointer(void *ptr);
 void ShowSockaddr(const struct sockaddr_in *addr);
 
 #define	SA	struct sockaddr
+typedef	void	Sigfunc(int);	/* for signal handlers */
 #define	bzero(ptr,n)		memset(ptr, 0, n)
 
 // wapper函数
@@ -87,13 +94,14 @@ void	 Sigprocmask(int, const sigset_t *, sigset_t *);
 pid_t	 Wait(int *);
 pid_t	 Waitpid(pid_t, int *, int);
 void	 Write(int, void *, size_t);
+Sigfunc *Signal(int, Sigfunc *);
 
 // lib
 void			 Inet_pton(int, const char *, void *);
 const char	*Inet_ntop(int, const void *, char *, size_t);
 
 // 错误处理
-void	 err_sys(const char *, ...);  //系统调用出错
-#define err_quit err_sys              //所有错误退出都转到err_sys，仅为方便
+void	 err_sys(const char *, ...);   //系统调用出错
+void	 err_quit(const char *, ...);  //出错退出
 
 #endif

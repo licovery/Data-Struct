@@ -42,6 +42,17 @@ void err_sys(const char *fmt, ...)
     vsnprintf(buf, MAXLINE, fmt, ap);
     perror(buf);
 	va_end(ap);
-	exit(1);
+	exit(-1);
+}
+
+void err_quit(const char *fmt, ...)
+{
+    va_list		ap;
+	va_start(ap, fmt);
+    char	buf[MAXLINE];
+    vsnprintf(buf, MAXLINE, fmt, ap);
+    fprintf(stderr, "%s\n", buf);
+    va_end(ap);
+	exit(-1);
 }
 

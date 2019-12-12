@@ -20,7 +20,9 @@ do
         continue
     fi
 
-    sh $target/build.sh
+    # 标准输出和标准错误一起重定向
+    sh $target/build.sh > log.txt 2>&1
+
 
     if [ $? -ne 0 ]
     then

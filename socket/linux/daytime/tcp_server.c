@@ -1,5 +1,30 @@
 #include "comm.h"
 
+int ServerProc(int acceptFd)
+{
+    //获取时间并计算rsp长度
+    time_t t = time(NULL);
+    char buf[MAX_BUF_SIZE] = {0};
+    int msgSize = strlen(ctime(&t)) + 1;
+    printf("message size:%d\n", msgSize);
+
+    //先发送rsp长度，通知客户端下一次发送数据的大小
+    //使用int来发送依然存在不安全的情况，因为可能不同机器对int的实现不一致
+    *(int *)buf = htonl(msgSize);
+    Write(acceptFd, buf, sizeof(int));
+    
+    memset(buf,0,MAX_BUF_SIZE);
+    snprintf(buf, MAX_BUF_SIZE, "%s", ctime(&t));
+    char *pBuf = buf;
+    //一个个字符地发送，如果不设置setsockopt可能实际会缓存起来再一次性发送
+    for(int i = 0; i < msgSize; i++)
+    {
+        Write(acceptFd, pBuf + i, 1);//write成功只是把数据写到内核缓冲区，不一定已经发送到对端
+    }
+    // 检测对端是否关闭连接,对端关闭的时候，read会返回0,等客户端先关闭
+    return Read(acceptFd, buf, MAX_BUF_SIZE);
+}
+
 int main(int argc, char *argv[])
 {
     //创建监听fd
@@ -20,6 +45,12 @@ int main(int argc, char *argv[])
     //监听fd
     Listen(listenFd, MAX_LISTEN_CON);
 
+    // 设置发送不缓存，tcpdump抓包显示确实是一个个发的，但是接收方read可能有缓存
+    // 已连接套接字的TCP_NODELAY选项是从监听套接字中继承来的，所以要设置已连接套接字必须先设置监听套接字
+    int opt = 1;
+    int optLen = sizeof(opt);
+    Setsockopt(listenFd, IPPROTO_TCP, TCP_NODELAY, &opt, optLen);
+    // 针对套接字的状态，什么时候设置和什么时候获取要有时序上的考虑
 
     while(1)//不退出
     {
@@ -32,33 +63,12 @@ int main(int argc, char *argv[])
         //输出客户端信息
         printf("connect from clinet ");
         ShowSockaddr(&clientAddr);
-        
-        //设置发送不缓存，tcpdump抓包显示确实是一个个发的，但是接收方read可能有缓存
-        int flag = 1;
-        Setsockopt(acceptFd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag));
 
-        //获取时间并计算rsp长度
-        time_t t = time(NULL);
-        char buf[MAX_BUF_SIZE] = {0};
-        int msgSize = strlen(ctime(&t)) + 1;
-        printf("message size:%d\n", msgSize);
-
-        //先发送rsp长度，通知客户端下一次发送数据的大小
-        //使用int来发送依然存在不安全的情况，因为可能不同机器对int的实现不一致
-        *(int *)buf = htonl(msgSize);
-        Write(acceptFd, buf, sizeof(int));
+        Getsockopt(acceptFd, IPPROTO_TCP, TCP_NODELAY, &opt, &optLen);
+        printf("IPPROTO_TCP TCP_NODELAY: %d\n", opt);
         
-        memset(buf,0,MAX_BUF_SIZE);
-        snprintf(buf, MAX_BUF_SIZE, "%s", ctime(&t));
-        char *pBuf = buf;
-        //一个个字符地发送，可能实际会缓存起来再一次性发送
-        for(int i = 0; i < msgSize; i++)
-        {
-            Write(acceptFd, pBuf + i, 1);//send成功只是把数据写到内核缓冲区，不一定已经发送到对端
-        }
-        // 检测对端是否关闭连接,对端关闭的时候，read会返回0,等客户端先关闭
-        int status = Read(acceptFd, buf, MAX_BUF_SIZE);
-        if (status == 0)
+
+        if (ServerProc(acceptFd) == 0)
         {
             //如果没有调用close，那么只是关闭了从client到server的数据流动，server到client的并没有关闭，tcp连接不会关闭
             //tcp断开的四次握手只有两次
