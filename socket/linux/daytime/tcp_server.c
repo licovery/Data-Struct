@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     Bind(listenFd, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
 
     printf("bind on ");
-    ShowSockaddr(&serverAddr);
+    ShowSockAddr(&serverAddr);
     
     //监听fd
     Listen(listenFd, MAX_LISTEN_CON);
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
         
         //输出客户端信息
         printf("connect from clinet ");
-        ShowSockaddr(&clientAddr);
+        ShowSockAddr(&clientAddr);
 
         Getsockopt(acceptFd, IPPROTO_TCP, TCP_NODELAY, &opt, &optLen);
         printf("IPPROTO_TCP TCP_NODELAY: %d\n", opt);

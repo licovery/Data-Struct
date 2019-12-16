@@ -62,7 +62,7 @@ int main(int argc, char**argv)
     struct sockaddr_in myAddr;
     socklen_t myAddrLen = sizeof(myAddr);
     Getsockname(conFd, (struct sockaddr *)&myAddr, &myAddrLen);
-    ShowSockaddr(&myAddr);
+    ShowSockAddr(&myAddr);
 
     ClinetProc(conFd);
     

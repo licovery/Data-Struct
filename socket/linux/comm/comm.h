@@ -1,7 +1,8 @@
-#ifndef COMM_H
-#define COMM_H
+#ifndef SOCK_COMM_H
+#define SOCK_COMM_H
 
 // linux(unix)内核
+#include <netdb.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>	
@@ -27,6 +28,8 @@
 #define MAX_BUF_SIZE 4096
 #define MAXLINE 1024
 #define MAX_CONNECTION 1024
+#define IPV4_STR_ADDR_LEN 16
+#define IPV6_STR_ADDR_LEN 64
 
 // 端口
 #define DAYTIME_PORT 30000
@@ -35,7 +38,8 @@
 
 void CheckStatus(int status);
 void CheckPointer(void *ptr);
-void ShowSockaddr(const struct sockaddr_in *addr);
+void ShowSockAddr(const struct sockaddr_in *addr);
+void ShowAddrInfo(struct addrinfo *result);
 
 #define	SA	struct sockaddr
 typedef	void	Sigfunc(int);	/* for signal handlers */
@@ -99,9 +103,14 @@ Sigfunc *Signal(int, Sigfunc *);
 // lib
 void			 Inet_pton(int, const char *, void *);
 const char	*Inet_ntop(int, const void *, char *, size_t);
+struct addrinfo * host_serv(const char *host, const char *serv, int family, int socktype);
+struct addrinfo * Host_serv(const char *host, const char *serv, int family, int socktype);
 
 // 错误处理
 void	 err_sys(const char *, ...);   //系统调用出错
 void	 err_quit(const char *, ...);  //出错退出
+
+
+
 
 #endif
