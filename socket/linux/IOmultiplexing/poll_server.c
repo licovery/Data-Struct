@@ -1,4 +1,5 @@
 #include "comm.h"
+#include "echo.h"
 
 #define NOT_CARE -1
 
@@ -24,8 +25,6 @@ int main()
     clinet[0].fd = listenFd;
     clinet[0].events = POLLRDNORM;
     maxIndex = 0;
-
-    char buf[MAX_BUF_SIZE];
 
     while (1)
     {
@@ -57,16 +56,10 @@ int main()
             // 找到可读的connFd
             if ((clinet[i].fd != NOT_CARE) && (clinet[i].revents & POLLRDNORM))
             {
-                int n = Read(clinet[i].fd, buf, MAX_BUF_SIZE);
-                // 客户端断开连接
-                if (n == 0)
+                if (ServerProc(clinet[i].fd) == 0)
                 {
                     Close(clinet[i].fd);
-                    clinet[i].fd = -1;
-                }
-                else
-                {
-                    Writen(clinet[i].fd, buf, n);
+                    clinet[i].fd = NOT_CARE;
                 }
                 ready--;
             }

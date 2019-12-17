@@ -1,18 +1,7 @@
 #include "comm.h"
+#include "echo.h"
 
 #define NOT_EXIST -1
-
-// 返回0代表客户端已经准备关闭
-int ServerProc(int fd)
-{
-    char buf[MAX_BUF_SIZE];
-    int n = 0;
-    if ((n = Read(fd, buf, MAX_BUF_SIZE)) > 0)
-    {
-        Writen(fd, buf, n);
-    }
-    return n;
-}
 
 int main()
 {
@@ -32,7 +21,7 @@ int main()
     FD_ZERO(&allSet);
     FD_SET(listenFd, &allSet);
 
-    int clinet[MAX_CONNECTION];
+    int clinet[MAX_CONNECTION]; // 存储fd
     int maxindex = -1;
     for (int i = 0; i < MAX_CONNECTION; i++)
     {
@@ -79,7 +68,7 @@ int main()
                 {
                     Close(clinet[i]);
                     FD_CLR(clinet[i], &allSet);
-                    clinet[i] = -1;
+                    clinet[i] = NOT_EXIST;
                 }
                 ready--;
             }

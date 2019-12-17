@@ -196,3 +196,56 @@ Socketpair(int family, int type, int protocol, int *fd)
 	if ( (n = socketpair(family, type, protocol, fd)) < 0)
 		err_sys("socketpair error");
 }
+
+
+
+int Epoll_create(int size)
+{
+    int n = epoll_create(size);
+    if (n < 0)
+    {
+        err_sys("epoll_create error");
+    }
+    return n;
+}
+
+void Epoll_ctl(int epfd, int op, int fd, struct epoll_event *event)
+{
+    if (epoll_ctl(epfd, op, fd, event) < 0)
+    {
+        err_sys("epoll_ctl error");
+    }
+}
+
+void epoll_add_event(int epfd, int fd, int flag)
+{
+    // 可以不初始化，因为值都会被填上
+    struct epoll_event ev;
+    ev.events = flag;
+    // 记录下事件所对应的fd
+    ev.data.fd = fd;
+    Epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &ev);
+}
+
+void epoll_modify_event(int epfd, int fd, int flag)
+{
+    struct epoll_event ev;
+    ev.events = flag;
+    ev.data.fd = fd;
+    Epoll_ctl(epfd, EPOLL_CTL_MOD, fd, &ev);
+}
+
+void epoll_delete_event(int epfd, int fd)
+{
+    Epoll_ctl(epfd, EPOLL_CTL_DEL, fd, NULL);
+}
+
+int Epoll_wait(int epfd, struct epoll_event *events, int maxEvents, int timeout)
+{
+    int n = epoll_wait(epfd, events, maxEvents, timeout);
+    if (n < 0)
+    {
+        err_sys("epoll_wait error");
+    }
+    return n;
+}

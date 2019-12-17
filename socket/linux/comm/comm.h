@@ -14,6 +14,7 @@
 #include <sys/wait.h>
 #include <netinet/tcp.h>
 #include <sys/stropts.h>
+#include <sys/epoll.h>
 
 // standard C
 #include <signal.h>
@@ -71,6 +72,14 @@ int		 Sockatmark(int);
 int		 Socket(int, int, int);
 void	 Socketpair(int, int, int, int *);
 void	 Writen(int, void *, size_t);
+int      Epoll_create(int size);
+void     Epoll_ctl(int epfd, int op, int fd, struct epoll_event *event);
+int      Epoll_wait(int epfd, struct epoll_event *events, int maxEvents, int timeout);
+void     epoll_add_event(int epfd, int fd, int flag);
+void     epoll_modify_event(int epfd, int fd, int flag);
+void     epoll_delete_event(int epfd, int fd);
+
+
 
 // stdio
 void	 Fclose(FILE *);
