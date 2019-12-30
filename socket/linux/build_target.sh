@@ -21,8 +21,9 @@ do
     fi
 
     # 标准输出和标准错误一起重定向
-    sh $target/build.sh > log.txt 2>&1
-
+    cd $target 
+    make all > log.txt 2>&1
+    cd ..
 
     if [ $? -ne 0 ]
     then

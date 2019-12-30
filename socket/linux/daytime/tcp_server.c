@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     // 设置发送不缓存，tcpdump抓包显示确实是一个个发的，但是接收方read可能有缓存
     // 已连接套接字的TCP_NODELAY选项是从监听套接字中继承来的，所以要设置已连接套接字必须先设置监听套接字
     int opt = 1;
-    int optLen = sizeof(opt);
+    socklen_t optLen = sizeof(opt);
     Setsockopt(listenFd, IPPROTO_TCP, TCP_NODELAY, &opt, optLen);
     // 针对套接字的状态，什么时候设置和什么时候获取要有时序上的考虑
 

@@ -1,4 +1,3 @@
-/* include writen */
 #include	"comm.h"
 
 ssize_t						/* Write "n" bytes to a descriptor. */
@@ -7,7 +6,7 @@ writen(int fd, const void *vptr, size_t n)
 	size_t		nleft;
 	ssize_t		nwritten;
 	const char	*ptr;
-
+    
 	ptr = vptr;
 	nleft = n;
 	while (nleft > 0) {

@@ -19,7 +19,7 @@ int main()
     struct epoll_event events[MAX_CONNECTION];
     while (1)
     {
-        int nReady = Epoll_wait(epfd, events, MAX_CONNECTION, -1);
+        int nReady = Epoll_wait(epfd, events, MAX_CONNECTION, -1); 
         for (int i = 0; i < nReady; i++)
         {
             int curFd = events[i].data.fd;

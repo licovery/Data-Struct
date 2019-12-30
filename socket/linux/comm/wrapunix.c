@@ -164,7 +164,16 @@ Signal(int signo, Sigfunc *func)
 	act.sa_handler = func;
 	sigemptyset(&act.sa_mask);
 	act.sa_flags = 0;
-	act.sa_flags |= SA_RESTART;		//重启因为信号处理被中断的慢系统调用，例如accept,read
+	if (signo == SIGALRM)
+	{
+		act.sa_flags |= SA_INTERRUPT;
+	}
+	else
+	{
+		act.sa_flags |= SA_RESTART;		//重启因为信号处理被中断的慢系统调用，例如accept,read
+	}
+	
+	
 
 	if (sigaction(signo, &act, &oldact) < 0)
 	{
@@ -172,3 +181,82 @@ Signal(int signo, Sigfunc *func)
 	}
 	return oldact.sa_handler;
 }
+
+int Fcntl(int fd, int cmd, int flag)
+{
+	int n;
+	if ((n = fcntl(fd, cmd, flag)) < 0)
+	{
+		err_sys("fcntl error");
+	}
+	return n;
+}
+
+int Ioctl(int fd, int request, void *arg)
+{
+	int n;
+	if ( (n = ioctl(fd, request, arg)) == -1)
+		err_sys("ioctl error");
+	return(n);	
+}
+
+
+char * gf_time()
+{
+	struct timeval	tv;
+	time_t			t;
+	static char		str[30];
+	char			*ptr;
+
+	if (gettimeofday(&tv, NULL) < 0)
+		err_sys("gettimeofday error");
+
+	t = tv.tv_sec;	/* POSIX says tv.tv_sec is time_t; some BSDs don't agree. */
+	ptr = ctime(&t);
+	strcpy(str, &ptr[11]);
+		/* Fri Sep 13 00:00:00 1986\n\0 */
+		/* 0123456789012345678901234 5  */
+	snprintf(str+8, sizeof(str)-8, ".%06ld", tv.tv_usec);
+
+	return(str);
+}
+
+int Pthread_create(pthread_t *tid, pthread_attr_t *arrt, Threadfunc *func, void *arg)
+{
+	errno = pthread_create(tid, arrt, func, arg);
+	if (errno != 0)
+	{
+		err_sys("pthread_create error");
+	}
+	return *tid;
+}
+
+void Pthread_join(pthread_t tid, void **retval)
+{
+	errno = pthread_join(tid, retval);
+	if (errno != 0)
+	{
+		err_sys("pthread_join error");
+	}
+}
+
+pthread_t Pthread_self()
+{
+	return pthread_self();
+}
+
+void Pthread_detach(pthread_t tid)
+{
+	errno = pthread_detach(tid);
+	if (errno != 0)
+	{
+		err_sys("pthread_death error");
+	}
+}
+
+// retval不能指向调用者的局部变量
+void Pthread_exit(void *retval)
+{
+	pthread_exit(retval);
+}
+
