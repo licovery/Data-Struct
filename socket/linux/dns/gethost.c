@@ -1,10 +1,5 @@
 #include "comm.h"
 
-void Usage(char *arg0)
-{
-    printf("./%s -a|-n <para>\n", arg0);
-}
-
 void ShowHostByName(const char *name)
 {
     struct hostent *hostPtr = gethostbyname(name);

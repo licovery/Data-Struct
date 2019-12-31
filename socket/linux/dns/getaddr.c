@@ -1,10 +1,5 @@
 #include "comm.h"
 
-void Usage(char *arg0)
-{
-    printf("./%s <host> <serv>\n", arg0);
-}
-
 
 int main(int argc, char *argv[]) 
 {

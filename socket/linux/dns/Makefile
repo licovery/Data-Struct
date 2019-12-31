@@ -10,6 +10,3 @@ getaddr: getaddr.c libcomm
 
 gethost: gethost.c libcomm
 	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
-
-
-	

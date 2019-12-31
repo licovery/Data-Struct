@@ -114,7 +114,7 @@ int Fcntl(int fd, int cmd, int flag);
 int Ioctl(int fd, int request, void *arg);
 char *gf_time();
 
-int Pthread_create(pthread_t *tid, pthread_attr_t *arrt, Threadfunc *func, void *arg);
+pthread_t Pthread_create(pthread_t *tid, pthread_attr_t *arrt, Threadfunc *func, void *arg);
 void Pthread_join(pthread_t tid, void **retval);
 pthread_t Pthread_self();
 void Pthread_detach(pthread_t tid);
@@ -129,5 +129,13 @@ struct addrinfo *Host_serv(const char *host, const char *serv, int family, int s
 // 错误处理
 void err_sys(const char *, ...);  //系统调用出错
 void err_quit(const char *, ...); //出错退出
+
+// 封装库函数
+int TcpConnect(char *ip, short port);
+int TcpListen(short port);
+int UdpConnect(char *ip, short port);
+void Usage(char *path);
+
+
 
 #endif

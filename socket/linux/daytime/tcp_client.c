@@ -1,10 +1,5 @@
 #include <comm.h>
 
-void Usage(char *path)
-{
-    printf("./%s <serverIp> <port>\n", path);
-}
-
 void ClinetProc(int conFd)
 {
     int recvByte = 0;

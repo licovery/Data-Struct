@@ -221,7 +221,7 @@ char * gf_time()
 	return(str);
 }
 
-int Pthread_create(pthread_t *tid, pthread_attr_t *arrt, Threadfunc *func, void *arg)
+pthread_t Pthread_create(pthread_t *tid, pthread_attr_t *arrt, Threadfunc *func, void *arg)
 {
 	errno = pthread_create(tid, arrt, func, arg);
 	if (errno != 0)

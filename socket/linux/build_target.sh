@@ -22,7 +22,7 @@ do
 
     # 标准输出和标准错误一起重定向
     cd $target 
-    make all > log.txt 2>&1
+    make all > ../log.txt 2>&1
     cd ..
 
     if [ $? -ne 0 ]

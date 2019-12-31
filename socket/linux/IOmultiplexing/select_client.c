@@ -1,11 +1,5 @@
 #include "comm.h"
 
-void Usage(char *arg0)
-{
-    printf("./%s <ip> <port>\n", arg0);
-}
-
-
 
 int main(int argc, char *argv[])
 {

@@ -1,9 +1,5 @@
 #include "comm.h"
 
-void Usage(char *path)
-{
-    printf("./%s <serverIp> <port>\n", path);
-}
 
 void ClientProc1(int sockFd, struct sockaddr *serverAddr, socklen_t addrLen)
 {
