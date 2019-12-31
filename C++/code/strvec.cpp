@@ -7,6 +7,7 @@ std::allocator<std::string> StrVec::alloc;
 
 StrVec::StrVec()
 {
+    std::cout << "StrVec DefaultConstruct" << std::endl;
     element = lastNext = cap = nullptr;
 }
 

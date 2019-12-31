@@ -9,7 +9,7 @@ using std::endl;
 
 class Test
 {
-
+    
 };
 
 void simpleTest()
@@ -34,7 +34,7 @@ void test()
     // inheritanceCompositionCtorDtorTest();
     // vectorPushBackTest();
     // strVecTest();
-    // strVecMoveTest();
+    strVecMoveTest();
     // chineseStringTest();
     // cinTest();
     // getlineTest();

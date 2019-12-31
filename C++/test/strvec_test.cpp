@@ -30,8 +30,11 @@ void strVecTest()
 void strVecMoveTest()
 {
     vector<StrVec> v;
-    v.push_back(StrVec ());
-    StrVec a = std::move(retStrVec());
+    v.push_back(retStrVec());
+    // 编译器经过特殊优化编程直接初始化，没有移动，甚至没有调用构造函数，由于Copy elision的特性。-fno-elide-constructors可以禁止这个特性
+    // https://zh.cppreference.com/w/cpp/language/copy_elision
+    // StrVec a(retStrVec()) 
+    StrVec a(std::move(retStrVec()));
     a = retStrVec();
     cout << a << endl;
 }
