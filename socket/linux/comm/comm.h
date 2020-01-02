@@ -1,5 +1,5 @@
-#ifndef SOCK_COMM_H
-#define SOCK_COMM_H
+#ifndef COMM_H
+#define COMM_H
 
 // linux(unix)内核
 #include <netdb.h>
@@ -19,6 +19,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <sys/time.h>
+#include <aio.h>
 
 // standard C
 #include <signal.h>
@@ -114,11 +115,22 @@ int Fcntl(int fd, int cmd, int flag);
 int Ioctl(int fd, int request, void *arg);
 char *gf_time();
 
+// Pthread
 pthread_t Pthread_create(pthread_t *tid, pthread_attr_t *arrt, Threadfunc *func, void *arg);
 void Pthread_join(pthread_t tid, void **retval);
 pthread_t Pthread_self();
 void Pthread_detach(pthread_t tid);
 void Pthread_exit(void *retval);
+
+// AIO
+void Aio_read(struct aiocb *aiocbp);
+void Aio_write(struct aiocb *aiocbp);
+ssize_t Aio_return(struct aiocb* aiocbp);
+int Aio_error(struct aiocb *aiocbp);
+int Aio_suspend(const struct aiocb *const cblist[], int size, const struct timespec *timeout);
+int Aio_cancel(int fd, struct aiocb *aiocbp);
+int AioIsCancel(struct aiocb *aiocbp);
+void Lio_listio(int mode, struct aiocb *list[], int nent, struct sigevent *sig);
 
 // lib
 void Inet_pton(int, const char *, void *);
@@ -134,6 +146,7 @@ void err_quit(const char *, ...); //出错退出
 int TcpConnect(char *ip, short port);
 int TcpListen(short port);
 int UdpConnect(char *ip, short port);
+int UdpBind( short port);
 void Usage(char *path);
 
 

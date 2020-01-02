@@ -159,13 +159,29 @@ int UdpConnect(char *ip, short port)
     Inet_pton(AF_INET, ip, &serverAddr.sin_addr);
     serverAddr.sin_port = htons(port);
 
-    //建立udp连接
+    //绑定远程地址，并没有真正connect
     Connect(conFd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 
     printf("connect to ");
     ShowSockAddr(&serverAddr);
     
     return conFd;
+}
+
+int UdpBind( short port)
+{
+    int sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
+
+    int flag = 1;
+    Setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
+    
+    //填入地址端口信息
+    struct sockaddr_in serverAddr = {0};
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serverAddr.sin_port = htons(port);
+
+    Bind(sockfd, (SA *)&serverAddr, sizeof(serverAddr));
 }
 
 void Usage(char *path)
