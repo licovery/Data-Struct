@@ -4,16 +4,14 @@ LIBPATHS = -I../comm -L../comm
 LIBS = -lcomm -lpthread -lrt
 ODIR = -o build
 
-.PHONY: dir
-dir:
-	mkdir -p build
 
 .PHONY: clean
 clean:
-	rm -f build/*
+	rm -rf build
 
 .PHONY: libcomm
 libcomm:
-	@cd ../comm; \
+	@mkdir -p build; \
+	cd ../comm; \
 	make libcomm; \
 	

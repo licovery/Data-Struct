@@ -7,7 +7,7 @@ static void alarmProc(int signo)
 
 int main(int argc, char**argv)
 {
-    Signal(SIGALRM, alarmProc);
+    
 
     //创建连接fd
     int conFd = Socket(AF_INET, SOCK_STREAM, 0);
@@ -19,6 +19,7 @@ int main(int argc, char**argv)
     serverAddr.sin_port = htons(atoi(argv[2]));
 
     // 5秒后发送SIGALRM信号，信号处理函数返回的时候会中断connnect
+    Signal(SIGALRM, alarmProc);
     alarm(5);
 
     int n;
@@ -27,13 +28,14 @@ int main(int argc, char**argv)
         close(conFd);
         if (errno == EINTR)
         {
-            fprintf(stderr, "connect timeout");
+            err_sys("connect timeout");
+        }
+        else
+        {
+            err_sys("connect error");
         }
     }
-    else
-    {
-        fprintf(stderr, "connect %d", n);
-    }
+    
 
     char buf[MAX_BUF_SIZE];
 
@@ -60,7 +62,6 @@ int main(int argc, char**argv)
     Setsockopt(conFd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
     // 所有写操作都设置超时
     Setsockopt(conFd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
-    
     
 
     return n;

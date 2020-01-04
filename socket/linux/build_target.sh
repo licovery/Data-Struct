@@ -14,7 +14,7 @@ green_begin="\033[32m"
 green_end="\033[0m"
 
 if [ $1 = "all" ]; then
-    targets="comm asynIO daytime dns IOmultiplexing multiprocess multithread nonblockIO socketopt udp"
+    targets="comm asynIO daytime dns IOmultiplexing multiprocess multithread nonblockIO socketopt timeout udp"
     ./build_target.sh $targets
 else
     echo "make log\n" > log.txt
