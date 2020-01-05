@@ -5,8 +5,9 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	kmpTest();
-    bmTest();
-    rkTest();
+	// kmpTest();
+    // bmTest();
+    // rkTest();
+    timerTest();
 	return 0;
 }

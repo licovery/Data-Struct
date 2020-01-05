@@ -5,5 +5,6 @@
 void kmpTest();
 void bmTest();
 void rkTest();
+void timerTest();
 
 #endif

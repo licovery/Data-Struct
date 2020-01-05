@@ -76,7 +76,7 @@ void swap(ValueClass &v1, ValueClass &v2);
 //行为像指针的类
 class PointerClass
 {
-    struct ShareString
+    struct ShareString //嵌套类
     {
         ShareString(const string &s = "", size_t u = 0): str(s), use(u) {}
         string str;
