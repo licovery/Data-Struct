@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
             }
             else
             {
-                Writen(conFd, buf, MAX_BUF_SIZE);
+                Writen(conFd, buf, n);
             }
         }
 
