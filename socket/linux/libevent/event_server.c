@@ -2,7 +2,6 @@
 #include <event2/listener.h>
 #include "comm.h"
 
-
 struct timeval tv = {5, 0};
 
 void ReadCallBack(int fd, short event, void *arg)
@@ -18,7 +17,7 @@ void ReadCallBack(int fd, short event, void *arg)
     else if (event & EV_CLOSED)
     {
         printf("fd:%d client close\n", fd);
-        event_del(readEvent); 
+        event_del(readEvent);
         event_free(readEvent);
         Close(fd);
     }
@@ -29,7 +28,6 @@ void ReadCallBack(int fd, short event, void *arg)
         int n = Read(fd, buf, MAX_BUF_SIZE);
         Writen(fd, buf, n);
     }
-    
 }
 
 void AcceptCallBack(int fd, short event, void *arg)
@@ -38,11 +36,10 @@ void AcceptCallBack(int fd, short event, void *arg)
 
     int connFd = Accept(fd, NULL, NULL);
 
-    struct event *readEvent = event_new(base, connFd, EV_READ|EV_CLOSED|EV_PERSIST, ReadCallBack, event_self_cbarg());
+    struct event *readEvent = event_new(base, connFd, EV_READ | EV_CLOSED | EV_PERSIST, ReadCallBack, event_self_cbarg());
     struct timeval connActiveInternal = {10, 0}; // 10秒没有活跃则超时断开
     event_add(readEvent, &connActiveInternal);
 }
-
 
 void SigIntCallback(int signo, short event, void *arg)
 {
@@ -58,7 +55,6 @@ void TimeoutCallBack(int fd, short event, void *arg)
     event_add(timerEvent, &tv);
 }
 
-
 int main()
 {
     int listenFd = TcpListen(ECHO_PORT);
@@ -66,7 +62,7 @@ int main()
     struct event_base *base = event_base_new();
 
     //创建并注册IO事件处理器
-    struct event *listenEvent = event_new(base, listenFd, EV_READ|EV_PERSIST, AcceptCallBack, base);
+    struct event *listenEvent = event_new(base, listenFd, EV_READ | EV_PERSIST, AcceptCallBack, base);
     event_add(listenEvent, NULL);
 
     // 创建并注册信号事件处理器
@@ -85,4 +81,5 @@ int main()
     event_free(signalEvent);
     event_free(timerEvent);
     event_base_free(base);
+    return 0;
 }

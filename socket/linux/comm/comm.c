@@ -1,14 +1,12 @@
 #include "comm.h"
 #include <stdarg.h>
 
-
-
 void CheckStatus(int status)
 {
     if (status < 0)
     {
         perror("status error");
-        exit(-1); 
+        exit(-1);
     }
 }
 
@@ -74,7 +72,7 @@ void ShowAddrInfo(struct addrinfo *result)
             fprintf(stderr, "unknow family\n");
             continue;
         }
-        
+
         printf("addr: %s:%d\n", ipStr, port);
         printf("===============================================\n");
     }
@@ -82,24 +80,24 @@ void ShowAddrInfo(struct addrinfo *result)
 
 void err_sys(const char *fmt, ...)
 {
-	va_list		ap;
-	va_start(ap, fmt);
-    char	buf[MAXLINE];
+    va_list ap;
+    va_start(ap, fmt);
+    char buf[MAXLINE];
     vsnprintf(buf, MAXLINE, fmt, ap);
     perror(buf);
-	va_end(ap);
-	exit(-1);
+    va_end(ap);
+    exit(-1);
 }
 
 void err_quit(const char *fmt, ...)
 {
-    va_list		ap;
-	va_start(ap, fmt);
-    char	buf[MAXLINE];
+    va_list ap;
+    va_start(ap, fmt);
+    char buf[MAXLINE];
     vsnprintf(buf, MAXLINE, fmt, ap);
     fprintf(stderr, "%s\n", buf);
     va_end(ap);
-	exit(-1);
+    exit(-1);
 }
 
 int TcpConnect(char *ip, short port)
@@ -129,15 +127,15 @@ int TcpListen(short port)
 
     int flag = 1;
     Setsockopt(listenFd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
-    
+
     //填入地址端口信息
     struct sockaddr_in serverAddr = {0};
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     serverAddr.sin_port = htons(port);
-    
+
     //fd绑定地址端口信息
-    Bind(listenFd, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
+    Bind(listenFd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
 
     printf("bind on ");
     ShowSockAddr(&serverAddr);
@@ -164,17 +162,17 @@ int UdpConnect(char *ip, short port)
 
     printf("connect to ");
     ShowSockAddr(&serverAddr);
-    
+
     return conFd;
 }
 
-int UdpBind( short port)
+int UdpBind(short port)
 {
     int sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
 
     int flag = 1;
     Setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
-    
+
     //填入地址端口信息
     struct sockaddr_in serverAddr = {0};
     serverAddr.sin_family = AF_INET;
@@ -182,10 +180,10 @@ int UdpBind( short port)
     serverAddr.sin_port = htons(port);
 
     Bind(sockfd, (SA *)&serverAddr, sizeof(serverAddr));
+    return sockfd;
 }
 
 void Usage(char *path)
 {
     printf("./%s <serverIp> <port>\n", path);
 }
-
