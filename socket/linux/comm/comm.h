@@ -99,6 +99,7 @@ void *Malloc(size_t);
 void *Mmap(void *, size_t, int, int, int, off_t);
 int Open(const char *, int, mode_t);
 void Pipe(int *fds);
+void Dup2(int fd1, int fd2);
 ssize_t Read(int, void *, size_t);
 void Sigaddset(sigset_t *, int);
 void Sigdelset(sigset_t *, int);
@@ -125,7 +126,7 @@ void Pthread_exit(void *retval);
 // AIO
 void Aio_read(struct aiocb *aiocbp);
 void Aio_write(struct aiocb *aiocbp);
-ssize_t Aio_return(struct aiocb* aiocbp);
+ssize_t Aio_return(struct aiocb *aiocbp);
 int Aio_error(struct aiocb *aiocbp);
 int Aio_suspend(const struct aiocb *const cblist[], int size, const struct timespec *timeout);
 int Aio_cancel(int fd, struct aiocb *aiocbp);
@@ -146,9 +147,7 @@ void err_quit(const char *, ...); //出错退出
 int TcpConnect(char *ip, short port);
 int TcpListen(short port);
 int UdpConnect(char *ip, short port);
-int UdpBind( short port);
+int UdpBind(short port);
 void Usage(char *path);
-
-
 
 #endif

@@ -14,8 +14,11 @@ green_begin="\033[32m"
 green_end="\033[0m"
 
 if [ $1 = "all" ]; then
-    targets="comm asynIO daytime dns IOmultiplexing multiprocess multithread nonblockIO socketopt timeout udp"
-    ./build_target.sh $targets
+    for dir in $(ls)
+    do
+        [ -d $dir ] && alltarget="$alltarget $dir"
+    done
+    ./build_target.sh $alltarget
 else
     echo "make log\n" > log.txt
     for target in $*
@@ -31,9 +34,6 @@ else
         # log打印
         pwd >> ../log.txt
         make all >> ../log.txt 2>&1
-        echo "" >> ../log.txt
-
-        cd ..
 
         if [ $? -ne 0 ]
         then
@@ -41,6 +41,10 @@ else
         else
             echo $green_begin"$target build succ"$green_end
         fi
+
+        echo "" >> ../log.txt
+        cd ..
+
     done
 fi
 
