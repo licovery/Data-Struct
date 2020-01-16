@@ -20,6 +20,8 @@
 #include <errno.h>
 #include <sys/time.h>
 #include <aio.h>
+#include <limits.h>
+#include <sys/stat.h>
 
 // standard C
 #include <signal.h>
@@ -27,6 +29,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdarg.h>
+
+// POSIX IPC
+#include <mqueue.h>
+#include <semaphore.h>
+#include <sys/mman.h>
 
 // 限制值
 #define MAX_LISTEN_CON 16
@@ -50,6 +58,8 @@ void ShowAddrInfo(struct addrinfo *result);
 typedef void Sigfunc(int);        /* for signal handlers */
 typedef void *Threadfunc(void *); /* for thread handlers */
 #define bzero(ptr, n) memset(ptr, 0, n)
+#define min(a, b) ((a) < (b) ? (a) : (b))
+#define max(a, b) ((a) > (b) ? (a) : (b))
 
 // wapper函数
 
@@ -149,5 +159,17 @@ int TcpListen(short port);
 int UdpConnect(char *ip, short port);
 int UdpBind(short port);
 void Usage(char *path);
+
+// IPC
+// POSXI semaphore
+sem_t *Sem_open(const char *ipcName, int oflag, ...);
+void Sem_close(sem_t *sem);
+void Sem_unlink(const char *ipcName);
+void Sem_wait(sem_t *sem);
+int Sem_trywait(sem_t *sem);
+void Sem_post(sem_t *sem);
+int Sem_getvalue(sem_t *sem);
+void Sem_init(sem_t *sem, int shared, unsigned int value);
+void Sem_destory(sem_t *sem);
 
 #endif
