@@ -133,6 +133,20 @@ pthread_t Pthread_self();
 void Pthread_detach(pthread_t tid);
 void Pthread_exit(void *retval);
 
+// Pthread mutex
+void Pthread_mutex_init(pthread_mutex_t *mptr, pthread_mutexattr_t *attr);
+void Pthread_mutex_destory(pthread_mutex_t *mutex);
+void Pthread_mutex_lock(pthread_mutex_t *mutex);
+int Pthread_mutex_trylock(pthread_mutex_t *mutex);
+void Pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+// Pthread cond
+void Pthread_condattr_init(pthread_condattr_t *attr);
+void Pthread_condattr_destroy(pthread_condattr_t *attr);
+void Pthread_cond_signal(pthread_cond_t *cptr);
+void Pthread_cond_wait(pthread_cond_t *cptr, pthread_mutex_t *mptr);
+void Pthread_cond_timedwait(pthread_cond_t *cptr, pthread_mutex_t *mptr, const struct timespec *tsptr);
+
 // AIO
 void Aio_read(struct aiocb *aiocbp);
 void Aio_write(struct aiocb *aiocbp);

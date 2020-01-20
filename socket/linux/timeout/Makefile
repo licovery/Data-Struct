@@ -1,6 +1,6 @@
 ﻿include ../Make.defines
 
-TARGETS =  alarm_select_timeout setopt_accept_timeout setopt_connect_timeout
+TARGETS =  alarm_select_timeout setopt_accept_timeout setopt_connect_timeout timer
 
 .PHONY: all
 all: ${TARGETS}
@@ -13,6 +13,9 @@ setopt_accept_timeout: setopt_accept_timeout.c libcomm
 	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
 
 setopt_connect_timeout: setopt_connect_timeout.c libcomm
+	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
+
+timer: timer.c libcomm
 	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
 
 

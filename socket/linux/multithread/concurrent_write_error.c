@@ -20,9 +20,9 @@ void *AddCount(void *arg)
 static pthread_mutex_t count_metex = PTHREAD_MUTEX_INITIALIZER; //必须初始化
 void *AddCountSafe(void *arg)
 {
-    pthread_mutex_lock(&count_metex);   // 加锁
+    Pthread_mutex_lock(&count_metex); // 加锁
     AddCount(NULL);
-    pthread_mutex_unlock(&count_metex); // 解锁
+    Pthread_mutex_unlock(&count_metex); // 解锁
     return NULL;
 }
 

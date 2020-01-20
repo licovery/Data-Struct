@@ -14,4 +14,3 @@ bufferevent_server: bufferevent_server.c libcomm
 
 bufferevent_client: bufferevent_client.c libcomm
 	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
-
