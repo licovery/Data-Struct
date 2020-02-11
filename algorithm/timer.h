@@ -24,6 +24,7 @@ class TimerManager
 {
 public:
     TimerManager();
+    ~TimerManager();
     Timer * setTimer(int timeout, CallBackFunc *func = nullptr, void *args = nullptr);
     void removeTimer(Timer *timer);
     void tick();

@@ -12,6 +12,20 @@ TimerManager::TimerManager()
     curslot = 0;
 }
 
+TimerManager::~TimerManager()
+{
+    for (int i = 0; i < N; i++)
+    {
+        for (auto it = slots[i].begin(); it != slots[i].end(); it++)
+        {
+            if (*it != nullptr)
+            {
+                delete *it;
+            }
+        }
+    }
+}
+
 Timer * TimerManager::setTimer(int timeout, CallBackFunc *func, void *args)
 {
     if (timeout < 0) // 设定了无意义的超时值
@@ -33,6 +47,7 @@ void TimerManager::removeTimer(Timer *timer)
         return;
     }
     slots[timer->slot].remove(timer);
+    delete timer;
 }
 
 void TimerManager::tick()
@@ -60,7 +75,6 @@ void TimerManager::tick()
     for (auto timer : deleteTimers)
     {
         removeTimer(timer);
-        delete timer;
     }
 
     // 先处理超时，再拨动slot指针
