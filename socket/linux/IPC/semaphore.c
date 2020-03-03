@@ -109,7 +109,7 @@ void *ProducerProc(void *arg)
             // 因为消费者总会阻塞在sem_wait(nproduct)
             // 生产者必须发送一个“假产品”，让消费者可以运行
             // 然后消费者运行到if判断，发现要取的产品已经取完，结束循环
-            Sem_post(&sharedBuf.nproduct);
+            Sem_post(&sharedBuf.nproduct);  
             break;
         }
 

@@ -186,4 +186,8 @@ int Sem_getvalue(sem_t *sem);
 void Sem_init(sem_t *sem, int shared, unsigned int value);
 void Sem_destory(sem_t *sem);
 
+// mode
+#define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
+/* default permissions for new files */
+
 #endif
