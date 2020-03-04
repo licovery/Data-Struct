@@ -182,3 +182,37 @@ void Mq_notify(mqd_t mqd, const struct sigevent *notification)
         err_sys("mq_notify error");
     }
 }
+
+int Shm_open(const char *ipcName, int flag, mode_t mode)
+{
+    int fd = shm_open(ipcName, flag, mode);
+    if (fd == -1)
+    {
+        err_sys("shm_open error");
+    }
+    return fd;
+}
+
+void Shm_unlink(const char *ipcName)
+{
+    if (shm_unlink(ipcName) == -1)
+    {
+        err_sys("shm_unlink error");
+    }
+}
+
+void Ftruncate(int fd, off_t length)
+{
+    if (ftruncate(fd, length) == -1)
+    {
+        err_sys("ftruncate error");
+    }
+}
+
+void Fstat(int fd, struct stat *info)
+{
+    if (fstat(fd, info) == -1)
+    {
+        err_sys("fstat error");
+    }
+}

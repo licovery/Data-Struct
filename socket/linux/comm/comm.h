@@ -106,7 +106,6 @@ void *Calloc(size_t, size_t);
 void Close(int);
 pid_t Fork(void);
 void *Malloc(size_t);
-void *Mmap(void *, size_t, int, int, int, off_t);
 int Open(const char *, int, mode_t);
 void Pipe(int *fds);
 void Dup2(int fd1, int fd2);
@@ -195,6 +194,19 @@ void Mq_setattr(mqd_t mqd, const struct mq_attr *attr, struct mq_attr *oattr);
 void Mq_send(mqd_t mqd, const char *ptr, size_t len, unsigned int prio);
 size_t Mq_receive(mqd_t mqd, char *ptr, size_t len, unsigned int *prio);
 void Mq_notify(mqd_t mqd, const struct sigevent *notification);
+
+// share memory
+void *Mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset);
+void Munmap(void *addr, size_t len);
+void Msync(void *addr, size_t len, int flag);
+
+int Shm_open(const char *ipcName, int flag, mode_t mode);
+void Shm_unlink(const char *ipcName);
+
+
+// file control
+void Ftruncate(int fd, off_t length);
+void Fstat(int fd, struct stat *info);
 
 // mode
 #define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)

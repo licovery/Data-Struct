@@ -26,3 +26,9 @@ message_queue_send: message_queue_send.c libcomm
 message_queue_recv: message_queue_recv.c libcomm
 	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
 
+memory_map: memory_map.c libcomm
+	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
+
+share_memory: share_memory.c libcomm
+	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
+

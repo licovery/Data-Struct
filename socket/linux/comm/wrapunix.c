@@ -35,16 +35,30 @@ Malloc(size_t size)
     return (ptr);
 }
 
-#include <sys/mman.h>
-
 void *
 Mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset)
 {
     void *ptr;
 
-    if ((ptr = mmap(addr, len, prot, flags, fd, offset)) == ((void *)-1))
+    if ((ptr = mmap(addr, len, prot, flags, fd, offset)) == MAP_FAILED)
         err_sys("mmap error");
     return (ptr);
+}
+
+void Munmap(void *addr, size_t len)
+{
+    if (munmap(addr, len) == -1)
+    {
+        err_sys("munmap error");
+    }
+}
+
+void Msync(void *addr, size_t len, int flag)
+{
+    if (msync(addr, len, flag) == -1)
+    {
+        err_sys("msync error");
+    }
 }
 
 int Open(const char *pathname, int oflag, mode_t mode)
@@ -62,11 +76,10 @@ void Pipe(int *fds)
         err_sys("pipe error");
 }
 
-void
-Dup2(int fd1, int fd2)
+void Dup2(int fd1, int fd2)
 {
-	if (dup2(fd1, fd2) == -1)
-		err_sys("dup2 error");
+    if (dup2(fd1, fd2) == -1)
+        err_sys("dup2 error");
 }
 
 ssize_t
@@ -209,4 +222,3 @@ char *gf_time()
 
     return (str);
 }
-
