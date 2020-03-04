@@ -96,3 +96,89 @@ void Sem_destory(sem_t *sem)
         err_sys("sem_destory error");
     }
 }
+
+// posix message queue
+mqd_t Mq_open(const char *ipcName, int oflag, ...)
+{
+    mqd_t mqd;
+
+    if (oflag & O_CREAT)
+    {
+        va_list vl;
+        va_start(vl, oflag);
+        mode_t mode = va_arg(vl, mode_t);
+        struct mq_attr *attr = va_arg(vl, struct mq_attr *);
+        va_end(vl);
+
+        if ((mqd = mq_open(ipcName, oflag, mode, attr)) == -1)
+        {
+            err_sys("mq_open error");
+        }
+    }
+    else
+    {
+        if ((mqd = mq_open(ipcName, oflag)) == -1)
+        {
+            err_sys("mq_open error");
+        }
+    }
+    return mqd;
+}
+
+void Mq_close(mqd_t mqd)
+{
+    if (mq_close(mqd) == -1)
+    {
+        err_sys("mq_close error");
+    }
+}
+
+void Mq_unlink(const char *ipcName)
+{
+    if (mq_unlink(ipcName) == -1)
+    {
+        err_sys("mq_unlink error");
+    }
+}
+
+void Mq_getattr(mqd_t mqd, struct mq_attr *attr)
+{
+    if (mq_getattr(mqd, attr) == -1)
+    {
+        err_sys("mq_getattr error");
+    }
+}
+
+void Mq_setattr(mqd_t mqd, const struct mq_attr *attr, struct mq_attr *oattr)
+{
+    if (mq_setattr(mqd, attr, oattr) == -1)
+    {
+        err_sys("mq_setattr error");
+    }
+}
+
+void Mq_send(mqd_t mqd, const char *ptr, size_t len, unsigned int prio)
+{
+    if (mq_send(mqd, ptr, len, prio) == -1)
+    {
+        err_sys("mq_send error");
+    }
+}
+
+size_t Mq_receive(mqd_t mqd, char *ptr, size_t len, unsigned int *prio)
+{
+    ssize_t n;
+    if ((n = mq_receive(mqd, ptr, len, prio)) == -1)
+    {
+        err_sys("mq_receive error");
+    }
+    return n;
+}
+
+void Mq_notify(mqd_t mqd, const struct sigevent *notification)
+{
+    if (mq_notify(mqd, notification) == -1)
+    {
+        err_sys("mq_notify error");
+    }
+}

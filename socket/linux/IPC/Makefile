@@ -1,6 +1,6 @@
 ﻿include ../Make.defines
 
-TARGETS = pipe semaphore
+TARGETS = pipe semaphore named_semaphore read_write_lock fifo message_queue_send message_queue_recv
 
 .PHONY: all
 all: ${TARGETS}
@@ -18,5 +18,11 @@ read_write_lock: read_write_lock.c libcomm
 	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
 
 fifo: fifo.c libcomm
+	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
+
+message_queue_send: message_queue_send.c libcomm
+	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
+
+message_queue_recv: message_queue_recv.c libcomm
 	${CC} ${CFLAGS} ${LIBPATHS} $@.c ${LIBS} ${ODIR}/$@
 
