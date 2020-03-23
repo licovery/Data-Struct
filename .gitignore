@@ -4,3 +4,4 @@ vscode-workspace/
 .vscode/
 build/
 log.txt
+*.out
