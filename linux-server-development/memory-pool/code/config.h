@@ -1,3 +1,6 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
 #include <vector>
 #include <algorithm>
 
@@ -84,3 +87,7 @@ inline bool operator==(const Config &c1, const Config &c2)
            c1.size == c2.size &&
            c1.total == c2.total;
 }
+
+#define ARRAY_LEN(a) (sizeof(a) / sizeof(a[0]))
+
+#endif

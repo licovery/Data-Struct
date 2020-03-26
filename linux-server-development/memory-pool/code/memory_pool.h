@@ -1,3 +1,6 @@
+#ifndef MEMORY_POOL_H
+#define MEMORY_POOL_H
+
 #include <sys/queue.h>
 
 #include <vector>
@@ -7,8 +10,7 @@
 constexpr int MAX_STR_LEN = 64;
 constexpr int RESERVE_BYTE = 8;
 constexpr char PROTECT_FIELD[RESERVE_BYTE] = {0x5A, 0x5A, 0x5A, 0x5A, 0x5A, 0x5A, 0x5A, 0x5A};
-constexpr int MEM_OFFSET = RESERVE_BYTE + sizeof(void *);
-constexpr int MEM_EXTRA_SIZE = 2 * RESERVE_BYTE + sizeof(void *);
+
 constexpr int SUCC = 0;
 constexpr int FAIL = -1;
 
@@ -45,6 +47,9 @@ struct MemBlockTail
     char m_reserveTail[RESERVE_BYTE]; //保护字段
 };
 
+constexpr int MEM_OFFSET = sizeof(MemBlockHead);
+constexpr int MEM_EXTRA_SIZE = sizeof(MemBlockHead) + sizeof(MemBlockTail);
+
 /*
 内存布局说明
 MemBlockHead:
@@ -63,6 +68,8 @@ struct MemBlock
 {
     static void *construct(int size, MemControlNode *ctrlNode);
     static int countMemory(int size);
+    static bool isValid(void *ptr);
+    static MemControlNode *getCtrlNode(void *ptr);
 };
 
 //调试信息
@@ -82,6 +89,15 @@ struct MemControlNode
     static MemControlNode *construct(MemBlockManager *manager);
     static int countMemory();
 
+    int blockSize() const;
+    void *data() const; //包括内存块头部
+    void *mem() const;  //真正返回给用户可用的内存
+    bool isUsed() const;
+    void setUsed();
+    void setFree();
+    void setDebug(const char *fileName, const char *funcName, int line);
+    int ret();
+
     bool m_used;                //空闲使用标志
     DebugInfo m_debuginfo;      //调试信息
     void *m_ptr;                //数据内存块的地址
@@ -98,6 +114,10 @@ struct MemBlockManager
     MemBlockManager(int type, int size, int total);
     static MemBlockManager *construct(int type, int size, int total);
     static void countMemory(int size, int total, int &cSize, int &dSize);
+    int blockSize() const;
+    int freeBlock() const;
+    void *getMem(const char *fileName, const char *funcName, int line);
+    int retMem(MemControlNode *ctrlNode);
 
     int m_type;                  //类型
     int m_size;                  //内存块大小
@@ -114,22 +134,22 @@ struct MemBlockManager
 TAILQ_HEAD(BlockMangerList, MemBlockManager);
 struct MemPool
 {
+    MemPool();
     MemPool(const std::vector<Config> &configs);
-    void init();
+    int init(const std::vector<Config> &configs);
+    void countMemory(const std::vector<Config> &configs);
+    void *getMem(int type, int size, const char *fileName = "", const char *funcName = "", int line = 0);
+    int retMem(void *ptr);
     void destory();
     ~MemPool();
 
     std::vector<Config> m_configs;                         //用户配置的内存池
-    bool m_valid;                                          //配置是否合法
+    bool m_init;                                           //是否已经初始化
     void *m_buffer;                                        //真正向系统申请的内存
     int m_bufferSize;                                      //buffer大小
     int m_ctrlSize;                                        //控制区域大小
     int m_dataSize;                                        //数据区域大小
     BlockMangerList m_typeIndex[static_cast<int>(N_TYPE)]; //所有类型对应的内存管理器队列
-
-private:
-    void countMemory(const std::vector<Config> &configs);
 };
 
-void *getMem(int type, int size);
-int retMem(int type, void *ptr);
+#endif
