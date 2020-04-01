@@ -1,0 +1,22 @@
+==43257== Memcheck, a memory error detector
+==43257== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==43257== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==43257== Command: ./test1
+==43257== 
+==43257== 
+==43257== HEAP SUMMARY:
+==43257==     in use at exit: 10 bytes in 1 blocks
+==43257==   total heap usage: 1 allocs, 0 frees, 10 bytes allocated
+==43257== 
+==43257== 10 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==43257==    at 0x4C2FDFB: malloc (vg_replace_malloc.c:309)
+==43257==    by 0x10865B: main (test1.cpp:6)
+==43257== 
+==43257== LEAK SUMMARY:
+==43257==    definitely lost: 10 bytes in 1 blocks
+==43257==    indirectly lost: 0 bytes in 0 blocks
+==43257==      possibly lost: 0 bytes in 0 blocks
+==43257==    still reachable: 0 bytes in 0 blocks
+==43257==         suppressed: 0 bytes in 0 blocks
+==43257== 
+==43257== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

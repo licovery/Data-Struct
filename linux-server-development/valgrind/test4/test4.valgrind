@@ -1,0 +1,23 @@
+==43464== Memcheck, a memory error detector
+==43464== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==43464== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==43464== Command: ./test4
+==43464== 
+==43464== Conditional jump or move depends on uninitialised value(s)
+==43464==    at 0x108988: main (test4.cpp:7)
+==43464== 
+==43464== 
+==43464== HEAP SUMMARY:
+==43464==     in use at exit: 0 bytes in 0 blocks
+==43464==   total heap usage: 3 allocs, 3 frees, 73,732 bytes allocated
+==43464== 
+==43464== All heap blocks were freed -- no leaks are possible
+==43464== 
+==43464== Use --track-origins=yes to see where uninitialised values come from
+==43464== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==43464== 
+==43464== 1 errors in context 1 of 1:
+==43464== Conditional jump or move depends on uninitialised value(s)
+==43464==    at 0x108988: main (test4.cpp:7)
+==43464== 
+==43464== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

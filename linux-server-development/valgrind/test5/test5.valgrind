@@ -1,0 +1,30 @@
+==43562== Memcheck, a memory error detector
+==43562== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==43562== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==43562== Command: ./test5
+==43562== 
+==43562== Mismatched free() / delete / delete []
+==43562==    at 0x4C31646: operator delete(void*, unsigned long) (vg_replace_malloc.c:595)
+==43562==    by 0x108810: main (test5.cpp:8)
+==43562==  Address 0x5b83c80 is 0 bytes inside a block of size 40 alloc'd
+==43562==    at 0x4C30B47: operator new[](unsigned long) (vg_replace_malloc.c:433)
+==43562==    by 0x1087FB: main (test5.cpp:6)
+==43562== 
+==43562== 
+==43562== HEAP SUMMARY:
+==43562==     in use at exit: 0 bytes in 0 blocks
+==43562==   total heap usage: 2 allocs, 2 frees, 72,744 bytes allocated
+==43562== 
+==43562== All heap blocks were freed -- no leaks are possible
+==43562== 
+==43562== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+==43562== 
+==43562== 1 errors in context 1 of 1:
+==43562== Mismatched free() / delete / delete []
+==43562==    at 0x4C31646: operator delete(void*, unsigned long) (vg_replace_malloc.c:595)
+==43562==    by 0x108810: main (test5.cpp:8)
+==43562==  Address 0x5b83c80 is 0 bytes inside a block of size 40 alloc'd
+==43562==    at 0x4C30B47: operator new[](unsigned long) (vg_replace_malloc.c:433)
+==43562==    by 0x1087FB: main (test5.cpp:6)
+==43562== 
+==43562== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

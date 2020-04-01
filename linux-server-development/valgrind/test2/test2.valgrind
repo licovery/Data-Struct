@@ -1,0 +1,22 @@
+==43293== Memcheck, a memory error detector
+==43293== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==43293== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==43293== Command: ./test2
+==43293== 
+==43293== 
+==43293== HEAP SUMMARY:
+==43293==     in use at exit: 40 bytes in 1 blocks
+==43293==   total heap usage: 2 allocs, 1 frees, 72,744 bytes allocated
+==43293== 
+==43293== 40 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==43293==    at 0x4C30B47: operator new[](unsigned long) (vg_replace_malloc.c:433)
+==43293==    by 0x10868B: main (test2.cpp:5)
+==43293== 
+==43293== LEAK SUMMARY:
+==43293==    definitely lost: 40 bytes in 1 blocks
+==43293==    indirectly lost: 0 bytes in 0 blocks
+==43293==      possibly lost: 0 bytes in 0 blocks
+==43293==    still reachable: 0 bytes in 0 blocks
+==43293==         suppressed: 0 bytes in 0 blocks
+==43293== 
+==43293== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
