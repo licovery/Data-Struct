@@ -11,30 +11,34 @@
 namespace lf_vec
 {
 
+class StrVec;
+std::ostream &operator<<(std::ostream &out, const StrVec &v);
+
 class StrVec
 {
 public:
     StrVec();
     StrVec(const StrVec &rhs);
     StrVec(StrVec &&rhs) noexcept; //移动构造函数，参数是右值引用，声明为noexpect，不抛出异常。
-    StrVec & operator=(const StrVec &rhs);
-    StrVec & operator=(StrVec &&rhs) noexcept;
-    StrVec & operator=(std::initializer_list<std::string> il);
-    std::string & operator[](size_t n);
-    const std::string & operator[](size_t n) const;
+    StrVec &operator=(const StrVec &rhs);
+    StrVec &operator=(StrVec &&rhs) noexcept; //移动赋值运算符，参数是右值引用，声明为noexpect，不抛出异常
+    StrVec &operator=(std::initializer_list<std::string> il);
+    std::string &operator[](size_t n);
+    const std::string &operator[](size_t n) const;
     //operator test start
-    StrVec & operator++();
+    StrVec &operator++();
     StrVec operator++(int);
-    StrVec & operator*() const;
-    StrVec * operator->() const;
+    StrVec &operator*() const;
+    StrVec *operator->() const;
     //operator test end
     ~StrVec();
     void push_back(const std::string &s);
     size_t size() const;
     size_t capacity() const;
-    std::string * begin() const;
-    std::string * end() const;
-    friend std::ostream & operator<<(std::ostream &out, const StrVec &v);
+    std::string *begin() const;
+    std::string *end() const;
+    friend std::ostream &operator<<(std::ostream &out, const StrVec &v);
+
 private:
     static std::allocator<std::string> alloc;
     void check_n_alloc();
@@ -46,9 +50,8 @@ private:
     std::string *cap;
 };
 
-std::ostream & operator<<(std::ostream &out, const StrVec &v);
 StrVec retStrVec();
 
-}
+} // namespace lf_vec
 
 #endif

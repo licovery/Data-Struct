@@ -56,6 +56,13 @@ namespace lf_cla
 {
     using ::std::ostream;
     using ::std::string;
+
+//前置声明
+class ValueClass;
+
+ostream & operator<<(ostream &out, const ValueClass &s);
+void swap(ValueClass &v1, ValueClass &v2);
+
 //行为像值的类的
 class ValueClass
 {
@@ -70,9 +77,8 @@ private:
     string *ps;
 };
 
-ostream & operator<<(ostream &out, const ValueClass &s);
-void swap(ValueClass &v1, ValueClass &v2);
-
+class PointerClass;
+ostream & operator<<(ostream &out, const PointerClass &p);
 //行为像指针的类
 class PointerClass
 {
@@ -92,7 +98,7 @@ private:
     ShareString *ps;
 };
 
-ostream & operator<<(ostream &out, const PointerClass &p);
+
 
 //测试sizeof
 class SizeA

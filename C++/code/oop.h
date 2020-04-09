@@ -1,12 +1,12 @@
 #ifndef OOP_H
 #define OOP_H
 
-#include<string>
+#include <string>
 #include <iostream>
 
 namespace lf_oop
 {
-    
+
 using std::cout;
 using std::endl;
 using std::string;
@@ -24,7 +24,6 @@ struct Base
     }
 };
 
-
 struct Component
 {
     Component()
@@ -38,7 +37,7 @@ struct Component
     }
 };
 
-struct Derived: public Base //先构造Base，再构造Component，再构造自身。析构顺序相反
+struct Derived : public Base //先构造Base，再构造Component，再构造自身。析构顺序相反
 {
     Derived()
     {
@@ -48,6 +47,7 @@ struct Derived: public Base //先构造Base，再构造Component，再构造自�
     {
         cout << "Derived DeStruct" << endl;
     }
+
 private:
     Component c;
 };
@@ -65,26 +65,27 @@ public:
 
     static void set(size_t n);
     static size_t get();
-    
+
 protected:
     double price = 0.0;
     static size_t totalBookNum;
+
 private:
     string bookNo = "";
 };
 
-class Disc_qoute: public Qoute //抽象基类
+class Disc_qoute : public Qoute //抽象基类
 {
 public:
     Disc_qoute() = default;
     Disc_qoute(const string &book, double p, size_t n, double d);
-    double net_price(size_t n) const = 0; //纯虚函数
+    virtual double net_price(size_t n) const = 0; //纯虚函数
 protected:
     size_t minNum = 0;
     double discount = 0.0;
 };
 
-class Bulk_qoute: public Disc_qoute
+class Bulk_qoute : public Disc_qoute
 {
 public:
     Bulk_qoute() = default;
@@ -93,23 +94,20 @@ public:
     // using Disc_qoute::Disc_qoute;
     // 继承过来的构造函数不算是用户自定义的，所以编译器还会自动合成默认构造函数
 
-    double net_price(size_t n) const override;//override让编译器去发现如果没有覆盖基类的虚函数
-    void debug() const override final; //final不让虚函数继续被子类覆写
+    virtual double net_price(size_t n) const override; //override让编译器去发现如果没有覆盖基类的虚函数
+    virtual void debug() const override final;         //final不让虚函数继续被子类覆写
 };
-
 
 class Document
 {
 public:
-    Document(const string &t = "", const string &c = ""): 
-    title(new string(t)), content(new string(c))
+    Document(const string &t = "", const string &c = "") : title(new string(t)), content(new string(c))
     {
     }
-    Document(const Document &rhs): 
-    title(new string(*(rhs.title))), content(new string(*(rhs.content)))
+    Document(const Document &rhs) : title(new string(*(rhs.title))), content(new string(*(rhs.content)))
     {
     }
-    Document & operator=(const Document &rhs)
+    Document &operator=(const Document &rhs)
     {
         auto tempT = new string(*(rhs.title));
         auto tempC = new string(*(rhs.content));
@@ -127,11 +125,11 @@ public:
     virtual void print() const //要被子类ovrewrite
     {
     }
-    string * getTitle() const
+    string *getTitle() const
     {
         return title;
     }
-    string * getContent() const
+    string *getContent() const
     {
         return content;
     }
@@ -139,18 +137,19 @@ public:
     {
         print();
     }
+
 private:
     string *title;
     string *content;
 };
 
-class MyDoc: public Document
+class MyDoc : public Document
 {
 public:
-    MyDoc(const string &t = "", const string &c = ""):Document(t, c)
+    MyDoc(const string &t = "", const string &c = "") : Document(t, c)
     {
     }
-    void print() const override
+    virtual void print() const override
     {
         cout << *getTitle() << endl;
         cout << *getContent() << endl;
@@ -166,7 +165,7 @@ public:
     }
 };
 
-class D1: public B1
+class D1 : public B1
 {
 public:
     void fcn(int)
@@ -179,7 +178,7 @@ public:
     }
 };
 
-class D2: public D1
+class D2 : public D1
 {
 public:
     void fcn()
@@ -196,7 +195,6 @@ public:
     }
 };
 
-
 //派生类的构造，拷贝，移动，析构
 class Base1
 {
@@ -204,37 +202,37 @@ public:
     Base1() = default;
     Base1(const Base1 &) = default;
     Base1(Base1 &&) = default;
-    Base1 & operator=(const Base1 &) = default;
-    Base1 & operator=(Base1 &&) = default;
-    virtual ~Base1() = default;//虚函数会增加对象的大小，会让对象多出一个指针
+    Base1 &operator=(const Base1 &) = default;
+    Base1 &operator=(Base1 &&) = default;
+    virtual ~Base1() = default; //虚函数会增加对象的大小，会让对象多出一个指针
 };
 
-class Derived1: public Base1
+class Derived1 : public Base1
 {
 public:
-    Derived1(): Base1()
+    Derived1() : Base1()
     {
         //列表初始化先调基类的构造函数
         // ...
     }
-    Derived1(const Derived1 &rhs): Base1(rhs)
+    Derived1(const Derived1 &rhs) : Base1(rhs)
     {
         //列表初始化先调基类的拷贝构造函数
         // ...
     }
-    Derived1(Derived1 &&lhs): Base1(std::move(lhs))
+    Derived1(Derived1 &&lhs) : Base1(std::move(lhs))
     {
         //列表初始化先调基类的移动构造函数
         // ...
     }
-    Derived1 & operator=(const Derived1 &rhs)
+    Derived1 &operator=(const Derived1 &rhs)
     {
         //先为基类部分赋值
         Base1::operator=(rhs);
         // ...
         return *this;
     }
-    Derived1 & operator=(Derived1 &&lhs)//注意这里lch是左值，因为lch是一个变量
+    Derived1 &operator=(Derived1 &&lhs) //注意这里lch是左值，因为lch是一个变量
     {
         //先为基类部分赋值
         Base1::operator=(std::move(lhs));

@@ -34,7 +34,7 @@ void test()
     // inheritanceCompositionCtorDtorTest();
     // vectorPushBackTest();
     // strVecTest();
-    strVecMoveTest();
+    // strVecMoveTest();
     // chineseStringTest();
     // cinTest();
     // getlineTest();
@@ -57,7 +57,7 @@ void test()
     // templateOverloadTest();
     // variadicTemplateTest();
     // templateSpecializationTest();
-    // vptrVtblTest();
+    vptrVtblTest();
     // simpleTest();
     // newDeleteTest();
     // classNewDeleteTest();
