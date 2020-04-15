@@ -1,5 +1,5 @@
 #include "oop.h"
-#include "virtual_func_table.h"
+#include "object_model.h"
 
 using namespace std;
 using namespace lf_oop;
@@ -12,18 +12,19 @@ void virtualFunTest()
     d1.openFile();
 }
 
-void vptrVtblTest()
+void singleInheritVtblTest()
 {
-    cout << "===Base===" << endl;
-    vtbl::singleInheritobjModelTest<vtbl::Base>();
+    vtbl::singleInheritobjModelTest();
+}
 
-    cout << endl;
-
-    cout << "===Derived===" << endl;
-    vtbl::singleInheritobjModelTest<vtbl::Deriverd>();
-
-    cout << endl << "===doubleInheri===" << endl;
+void multiInheritVtblTest()
+{
     vtbl::doubleInheritobjModelTest();
+}
+
+void vitrualInheritVtblTest()
+{
+    vtbl::vitrualInheritObjModelTest();
 }
 
 void inheritanceCompositionCtorDtorTest()

@@ -9,7 +9,6 @@ using std::endl;
 
 class Test
 {
-    
 };
 
 void simpleTest()
@@ -22,7 +21,6 @@ void simpleTest()
     // cout <<sizeof(Test) << endl;//空的类由于有特殊的实现，size是1
     // cout << __cplusplus << endl;
 }
-
 
 void test()
 {
@@ -57,7 +55,9 @@ void test()
     // templateOverloadTest();
     // variadicTemplateTest();
     // templateSpecializationTest();
-    vptrVtblTest();
+    // singleInheritVtblTest();
+    multiInheritVtblTest();
+    vitrualInheritVtblTest();
     // simpleTest();
     // newDeleteTest();
     // classNewDeleteTest();

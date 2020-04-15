@@ -14,7 +14,9 @@ void sizeofTest();
 
 //oop
 void virtualFunTest();
-void vptrVtblTest();
+void singleInheritVtblTest();
+void multiInheritVtblTest();
+void vitrualInheritVtblTest();
 void inheritanceCompositionCtorDtorTest();
 void oopStaticTest();
 void oopVirtualFunTest();
@@ -33,7 +35,6 @@ void strVecMoveTest();
 //stl
 void customizeClassInMap();
 void vectorPushBackTest();
-
 
 //operator_overloading
 void memberAccessOperatorOverloadTest();
