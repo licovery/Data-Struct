@@ -78,28 +78,22 @@ PokerGame::PokerGame(const string &computerName, const vector<Poker> &poker1,
     }
 }
 
-int n = 0;
-
 // curPlayer 当前出牌的人，
 // isLeader  上一次领先，当前是否可以随意出牌
 bool PokerGame::isFirstFinallyWin(int curPlayer, bool isLeader)
 {
     if (isGameOver())
     {
-        if (m_game.front().m_value == 3)
-        {
-            n++;
-        }
         if (m_first.isWin())
         {
-            // cout << "===win===" << endl
-            //      << *this;
+            cout << "===win===" << endl
+                 << *this;
             return true;
         }
         else
         {
-            // cout << "===win===" << endl
-            //      << *this;
+            cout << "===lose===" << endl
+                 << *this;
             return false;
         }
     }
@@ -125,13 +119,13 @@ bool PokerGame::isFirstFinallyWin(int curPlayer, bool isLeader)
                 }
                 m_first.undo();
             }
-            //没有机会出牌
-            if (!hasChange)
+        }
+        //没有机会出牌
+        if (!hasChange)
+        {
+            if (isFirstFinallyWin(nextPlayer, true))
             {
-                if (isFirstFinallyWin(nextPlayer, true))
-                {
-                    return true;
-                }
+                return true;
             }
         }
         // 当前状态下不存在必胜节点
@@ -216,7 +210,6 @@ int main()
         Poker(8, Poker::PAIR)};
 
     PokerGame pokerGame("AI", pokers, "Neo", pokers);
-    cout << pokerGame.isFirstFinallyWin(PokerGame::FIRST, true) << endl
-         << n << endl;
+    cout << pokerGame.isFirstFinallyWin(PokerGame::FIRST, true) << endl;
     return 0;
 }
