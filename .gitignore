@@ -3,5 +3,5 @@ vscode-workspace/
 .idea/
 .vscode/
 build/
-log.txt
+*.txt
 *.out
