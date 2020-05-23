@@ -3,7 +3,6 @@
 namespace lf_tem
 {
 
-
 //显式实例化函数模板
 template int mycompare(const int &, const int &);
 
@@ -32,7 +31,6 @@ string debug_rep(const string &s)
     return "const string &s";
 }
 
-
 //模板特例化定义
 template <>
 int mycompare(const ConstCharPointer &p1, const ConstCharPointer &p2)
@@ -40,4 +38,12 @@ int mycompare(const ConstCharPointer &p1, const ConstCharPointer &p2)
     return strcmp(p1, p2);
 }
 
-}
+// TemplateTemplateParameter<int, vector> obj;
+// 调用出错，因为vector是需要两个参数地模板
+
+template <typename T>
+using Vec = vector<T, allocator<T>>;
+// Vec是一个模板，只有一个模板参数的类模板
+TemplateTemplateParameter<int, Vec> obj;
+
+} // namespace lf_tem

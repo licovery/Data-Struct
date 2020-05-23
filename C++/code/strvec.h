@@ -14,6 +14,8 @@ namespace lf_vec
 class StrVec;
 std::ostream &operator<<(std::ostream &out, const StrVec &v);
 
+//移动函数（移动构造或者移动赋值）必须声明为noexpect才能让容器去调用，因为容器没有异常处理
+
 class StrVec
 {
 public:

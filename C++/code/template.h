@@ -232,6 +232,15 @@ using IntTemplate = TwoTemplate<int, T>;
 template <typename T>
 using TemplateInt = TwoTemplate<T, int>;
 
+template <typename T,
+          template <typename> class Container> //模板模板参数
+                                               /*只有一个typename(或者class)，说明 Container是一种只接受一个参数的模板的模板类*/
+class TemplateTemplateParameter
+{
+private:
+    Container<T> c;
+};
+
 //默认模板参数
 
 //函数模板
